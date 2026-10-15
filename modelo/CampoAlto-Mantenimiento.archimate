@@ -1,0 +1,1890 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<archimate:model xmlns:archimate="http://www.archimatetool.com/archimate" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="CampoAlto - Mantenimiento de la flota" id="id-campoalto" version="5.0.0">
+  <folder name="Strategy" id="id-folder-strategy" type="strategy">
+    <element xsi:type="archimate:Capability" name="Comercializar la fumigación · fuera" id="id-cap-com" />
+    <element xsi:type="archimate:Capability" name="Facturar hectáreas · fuera" id="id-cap-fac" />
+    <element xsi:type="archimate:Capability" name="Programar la operación · colinda" id="id-cap-prog" />
+    <element xsi:type="archimate:Capability" name="Armar finca, piloto y dron · fuera" id="id-cap-armar" />
+    <element xsi:type="archimate:Capability" name="Recibir la lista de disponibles · colinda" id="id-cap-listaop" />
+    <element xsi:type="archimate:Capability" name="Ejecutar la fumigación · colinda" id="id-cap-vuelo" />
+    <element xsi:type="archimate:Capability" name="Pre-vuelo · fuera" id="id-cap-pre" />
+    <element xsi:type="archimate:Capability" name="Reportar la novedad · colinda" id="id-cap-nov" />
+    <element xsi:type="archimate:Capability" name="Mantener la flota para salir · entra" id="id-cap-mant" />
+    <element xsi:type="archimate:Capability" name="Llevar las horas · entra" id="id-cap-horas" />
+    <element xsi:type="archimate:Capability" name="Intervenir por subsistema · entra" id="id-cap-int" />
+    <element xsi:type="archimate:Capability" name="Soltar el vuelo · entra" id="id-cap-soltar" />
+    <element xsi:type="archimate:Capability" name="Publicar la lista · entra" id="id-cap-pub" />
+    <element xsi:type="archimate:Capability" name="Abastecer el repuesto · colinda" id="id-cap-rep" />
+    <element xsi:type="archimate:Capability" name="Pedir por nombre y modelo · entra" id="id-cap-pedir" />
+    <element xsi:type="archimate:Capability" name="Existencia y factura en Siigo · fuera" id="id-cap-stock" />
+    <element xsi:type="archimate:Capability" name="Sostener el permiso de volar · colinda" id="id-cap-perm" />
+    <element xsi:type="archimate:Capability" name="Registro y póliza · fuera" id="id-cap-pol" />
+    <element xsi:type="archimate:Capability" name="Frenar si seguridad avisa · entra" id="id-cap-freno" />
+    <element xsi:type="archimate:Capability" name="Definir dosis y producto · fuera" id="id-cap-quim" />
+    <element xsi:type="archimate:Resource" name="16 T50 y 8 T40, baterías 54 y 30" id="id-rs-flota" />
+    <element xsi:type="archimate:Resource" name="Taller Palmira y bases Buga y Espinal" id="id-rs-bases" />
+    <element xsi:type="archimate:Resource" name="App del Agras y estantería" id="id-rs-app" />
+    <element xsi:type="archimate:CourseOfAction" name="Crítico solo con visto bueno del jefe" id="id-ca-visto" />
+    <element xsi:type="archimate:CourseOfAction" name="200 h o seis meses, lo que ocurra primero" id="id-ca-primero" />
+    <element xsi:type="archimate:CourseOfAction" name="Dejar el indicador en blanco si falta el dato" id="id-ca-cero" />
+    <element xsi:type="archimate:ValueStream" name="Devolver el dron a disponible" id="id-vs" />
+    <element xsi:type="archimate:ValueStream" name="Regreso a la base" id="id-vs1" />
+    <element xsi:type="archimate:ValueStream" name="Horas y decisión" id="id-vs2" />
+    <element xsi:type="archimate:ValueStream" name="Intervención y visto bueno" id="id-vs3" />
+    <element xsi:type="archimate:ValueStream" name="Lista antes de las cinco" id="id-vs4" />
+  </folder>
+  <folder name="Business" id="id-folder-business" type="business">
+    <element xsi:type="archimate:BusinessActor" name="Jefe de mantenimiento" id="id-act-jefe" />
+    <element xsi:type="archimate:BusinessActor" name="Técnico de línea" id="id-act-linea" />
+    <element xsi:type="archimate:BusinessActor" name="Técnicos de Palmira" id="id-act-esp">
+      <documentation>Dos de motores, uno de baterías, uno de bombas, uno de electrónica.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessActor" name="Piloto" id="id-act-piloto" />
+    <element xsi:type="archimate:BusinessActor" name="Coordinador de operaciones" id="id-act-coord" />
+    <element xsi:type="archimate:BusinessActor" name="Responsable de seguridad" id="id-act-seg" />
+    <element xsi:type="archimate:BusinessProcess" name="Recibir el dron" id="id-p-rec" />
+    <element xsi:type="archimate:BusinessProcess" name="Anotar un solo total de horas" id="id-p-hor" />
+    <element xsi:type="archimate:BusinessProcess" name="Decidir verde u orden" id="id-p-dec" />
+    <element xsi:type="archimate:BusinessProcess" name="Intervenir" id="id-p-int" />
+    <element xsi:type="archimate:BusinessProcess" name="Cerrar el trabajo del técnico" id="id-p-cie" />
+    <element xsi:type="archimate:BusinessProcess" name="Dar el visto bueno" id="id-p-vis" />
+    <element xsi:type="archimate:BusinessProcess" name="Publicar la lista" id="id-p-pub" />
+    <element xsi:type="archimate:BusinessProcess" name="Retener por boletín o papeles" id="id-p-ret" />
+    <element xsi:type="archimate:BusinessProcess" name="Pre-vuelo (fuera de este camino)" id="id-p-pre" />
+    <element xsi:type="archimate:BusinessProcess" name="Asignar la finca (fuera)" id="id-p-asig" />
+    <element xsi:type="archimate:BusinessEvent" name="Jornada cerrada" id="id-ev-j" />
+    <element xsi:type="archimate:BusinessEvent" name="50 h, 200 h o seis meses" id="id-ev-50" />
+    <element xsi:type="archimate:BusinessEvent" name="Síntoma o daño" id="id-ev-sin" />
+    <element xsi:type="archimate:BusinessEvent" name="Boletín o mensaje de seguridad" id="id-ev-bol" />
+    <element xsi:type="archimate:BusinessEvent" name="Pre-vuelo fallido" id="id-ev-pre" />
+    <element xsi:type="archimate:BusinessEvent" name="Lista publicada" id="id-ev-lista" />
+    <element xsi:type="archimate:BusinessService" name="Cerrar la jornada" id="id-bs-cerrar">
+      <documentation>Capa de proceso. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Publicar disponibilidad" id="id-bs-pub">
+      <documentation>Capa de proceso. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Registrar las horas" id="id-bs-horas">
+      <documentation>Capa de tarea. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Llevar la orden de trabajo" id="id-bs-ot">
+      <documentation>Capa de tarea. Dentro. El hallazgo se agrega en la misma orden.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Cumplir 50 h y visita de motor" id="id-bs-plan">
+      <documentation>Capa de tarea. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Emitir el visto bueno" id="id-bs-visto">
+      <documentation>Capa de tarea. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Retener el dron" id="id-bs-ret">
+      <documentation>Capa de tarea. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Decidir la baja de la batería" id="id-bs-baja">
+      <documentation>Capa de tarea. Dentro. No es automática.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Dron y despiece" id="id-bs-dron">
+      <documentation>Capa de entidad. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Orden de trabajo" id="id-bs-orden">
+      <documentation>Capa de entidad. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Lista del día" id="id-bs-lista">
+      <documentation>Capa de entidad. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="No publicar cero" id="id-bs-cero">
+      <documentation>Capa de utilidad. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Reloj de horas y de seis meses" id="id-bs-reloj">
+      <documentation>Capa de utilidad. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Traducir la lectura del Agras" id="id-bs-agras">
+      <documentation>Anticorrupción. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Entregar la lista a operaciones" id="id-bs-out">
+      <documentation>Anticorrupción. Dentro.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Pedir pieza por nombre y modelo" id="id-bs-ped">
+      <documentation>Anticorrupción. Dentro. Sin código de bodega.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Recibir freno de seguridad o boletín" id="id-bs-seg">
+      <documentation>Anticorrupción. Dentro. Sin portal.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Programar la finca" id="id-x-finca">
+      <documentation>Fuera de alcance. Lo hace el coordinador. A él le basta número, si sale y el límite.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Facturar hectáreas" id="id-x-fact">
+      <documentation>Fuera de alcance. Comercial, en Siigo, después del vuelo. La factura no suelta el dron.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Consultar FlightHub" id="id-x-fh">
+      <documentation>Fuera de alcance. Operaciones mira la ubicación. El taller no lo usa para horas ni disponibilidad.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Radicar en el portal" id="id-x-port">
+      <documentation>Fuera de alcance. Cerrar la orden no radica nada. Lo arma seguridad, aparte.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Revisar dosis e ICA" id="id-x-ica">
+      <documentation>Fuera de alcance. La dosis la pone el agrónomo. No entra al verde.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Consultar habilitación" id="id-x-hab">
+      <documentation>Fuera de alcance. No existe ese registro. El alcance es el puesto.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Existencia automática" id="id-x-stock">
+      <documentation>Fuera de alcance. La existencia se ve en la estantería o la dice la base. Siigo no la devuelve.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Actualizar firmware" id="id-x-fw">
+      <documentation>Fuera de alcance. Lo hace el técnico si el jefe autorizó. El software no lo instala.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Abrir la garantía" id="id-x-gar">
+      <documentation>Fuera de alcance. El preventivo no abre la garantía. El trámite no suelta el vuelo.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Baja automática de batería" id="id-x-baja">
+      <documentation>Fuera de alcance. A los 500 ciclos se propone. La baja la firma el jefe.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Cruzar pieza T40/T50" id="id-x-cruce">
+      <documentation>Fuera de alcance. El repuesto no se cruza. El T50 no sale con una sola bomba.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessService" name="Hacer el pre-vuelo" id="id-x-pre">
+      <documentation>Fuera de alcance. Es de la madrugada, ya asignado. Si falla lo crítico, el dron vuelve a orden.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato cierre de jornada" id="id-ct-cerrar">
+      <documentation>Entra: número, horas de la pantalla o de la hoja ya corregida, síntoma y foto si hay. Sale: verde o en OT.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato de la lista" id="id-ct-pub">
+      <documentation>Número, sale o condicionado o no sale, límite si condicionado, motivo en una línea. Sin despiece y sin póliza.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato de horas" id="id-ct-horas">
+      <documentation>Un solo total. Origen: pantalla, o app si la supera en 10 h o más, o la hoja si la misión quedó abierta. Sin hectáreas.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato de la orden" id="id-ct-ot">
+      <documentation>Consecutivo del año, motivo de entrada, líneas con serial, un solo número de horas. El hallazgo no abre otro papel.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato del plan" id="id-ct-plan">
+      <documentation>50 h al cerrar la jornada en que se cumplen. Visita de motor a las 200 h o a los seis meses, lo primero. No corta el lote empezado.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato del visto bueno" id="id-ct-visto">
+      <documentation>Número, orden, subsistema crítico y decisión del jefe. Sin este contrato el coordinador no arma la finca.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato de retención" id="id-ct-ret">
+      <documentation>Mensaje de seguridad o boletín, seriales que coinciden y efecto: frena ya o espera a la de 50 h.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato de baja" id="id-ct-baja">
+      <documentation>La decide el jefe. Excepción de más de 500 ciclos: pico de arroz, sin hinchazón, celdas parejas, lote cerca de carretera.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato del dron" id="id-ct-dron">
+      <documentation>Número, modelo T40 o T50, piezas montadas del mismo modelo.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato expediente de orden" id="id-ct-orden">
+      <documentation>Papel o foto. Si no queda ninguno, el servicio no se inventa: se vuelve a hacer.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato lista guardada" id="id-ct-lista">
+      <documentation>El conteo de las 17:00 se guarda. No se inventa el promedio del mes.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato sin cero" id="id-ct-cero">
+      <documentation>Si falta costo o no se contaron fallas, el indicador queda vacío. Cero no se escribe.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato del reloj" id="id-ct-reloj">
+      <documentation>Horas desde la última de 50. Fecha de la última visita de motor.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato lectura Agras" id="id-ct-agras">
+      <documentation>Horas, caudal, alerta y ciclos si esa pantalla se abrió. No llegan solos a la hoja. FlightHub no entra.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato hacia operaciones" id="id-ct-out">
+      <documentation>Lo mismo que la lista. Ellos devuelven finca, piloto, dron y si un lote se corrió. Eso no suelta un dron.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato del pedido" id="id-ct-ped">
+      <documentation>Nombre y modelo: bomba de T50, par de hélice de T50. No hay código de bodega ni kit de intervención.</documentation>
+    </element>
+    <element xsi:type="archimate:Contract" name="Contrato del freno" id="id-ct-seg">
+      <documentation>Este dron no sale, por registro, póliza o incidente. El taller no consulta la póliza por su cuenta.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Estado del dron" id="id-bo-estado">
+      <documentation>Verde, en OT, pendiente de visto bueno, sale condicionado, frenado.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Total de horas de la hoja" id="id-bo-horas" />
+    <element xsi:type="archimate:BusinessObject" name="Orden de trabajo" id="id-bo-orden" />
+    <element xsi:type="archimate:BusinessObject" name="Batería" id="id-bo-bat" />
+    <element xsi:type="archimate:BusinessObject" name="Lote prometido" id="id-bo-prom">
+      <documentation>El coordinador ya le dijo al cliente que entra. No es la factura.</documentation>
+    </element>
+    <element xsi:type="archimate:Representation" name="«Disponible» en la lista de las cinco" id="id-rp-disp" />
+    <element xsi:type="archimate:Representation" name="«Disponible» como ubicación" id="id-rp-fh" />
+    <element xsi:type="archimate:Representation" name="Total escrito en la hoja" id="id-rp-hoja" />
+    <element xsi:type="archimate:Representation" name="Horas en el WhatsApp del piloto" id="id-rp-msg" />
+    <element xsi:type="archimate:Representation" name="Firma en el papel" id="id-rp-firma" />
+    <element xsi:type="archimate:Representation" name="Mensaje en el grupo Programa" id="id-rp-visto" />
+    <element xsi:type="archimate:Representation" name="Encabezado 50 h o visita de motor" id="id-rp-prev" />
+    <element xsi:type="archimate:Representation" name="Hallazgo que retiene" id="id-rp-falla" />
+    <element xsi:type="archimate:Representation" name="Baja firmada por el jefe" id="id-rp-baja" />
+    <element xsi:type="archimate:Representation" name="Guardada a media carga" id="id-rp-media" />
+    <element xsi:type="archimate:Representation" name="Copia del registro detrás de las órdenes" id="id-rp-reg" />
+    <element xsi:type="archimate:Representation" name="Carpeta física del dron" id="id-rp-carp" />
+    <element xsi:type="archimate:Representation" name="El lote ya fue prometido" id="id-rp-prom" />
+    <element xsi:type="archimate:Representation" name="Factura de hectáreas en Siigo" id="id-rp-fac" />
+    <element xsi:type="archimate:BusinessObject" name="Disponibilidad del dron" id="id-ag-disp">
+      <documentation>No queda en verde con orden crítica abierta. Esos cuatro subsistemas esperan al jefe. Con las 50 h cumplidas no hay jornada nueva. Hacen falta dos baterías sanas. Condicionado solo el carenado que no toca hélice ni tanque.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Estado" id="id-ag-disp-0" />
+    <element xsi:type="archimate:BusinessObject" name="Horas desde la 50" id="id-ag-disp-1" />
+    <element xsi:type="archimate:BusinessObject" name="Fecha de visita de motor" id="id-ag-disp-2" />
+    <element xsi:type="archimate:BusinessObject" name="Baterías sanas del modelo" id="id-ag-disp-3" />
+    <element xsi:type="archimate:BusinessObject" name="Límite condicionado" id="id-ag-disp-4" />
+    <element xsi:type="archimate:BusinessObject" name="Orden de trabajo" id="id-ag-ot">
+      <documentation>Una entrada, una orden. Un solo número de horas. La firma crítica no pone verde. El de línea no firma motor, baja ni electrónica. Canibalizar solo desde un dron que ya está en orden, con autorización del jefe, y en las dos órdenes. Sin papel ni foto el servicio se vuelve a hacer.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Línea de intervención" id="id-ag-ot-0" />
+    <element xsi:type="archimate:BusinessObject" name="Serial de la pieza" id="id-ag-ot-1" />
+    <element xsi:type="archimate:BusinessObject" name="Motivo de entrada" id="id-ag-ot-2" />
+    <element xsi:type="archimate:BusinessObject" name="Horas anotadas" id="id-ag-ot-3" />
+    <element xsi:type="archimate:BusinessObject" name="Par de hélice o boquilla" id="id-ag-ot-4" />
+    <element xsi:type="archimate:BusinessObject" name="Total de horas" id="id-ag-horas">
+      <documentation>No se suman piloto y app. Diez horas o más por encima: manda la app. App por debajo porque no cerraron la misión: manda la hoja. FlightHub no entra.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Lectura de pantalla" id="id-ag-horas-0" />
+    <element xsi:type="archimate:BusinessObject" name="Lectura de la app" id="id-ag-horas-1" />
+    <element xsi:type="archimate:BusinessObject" name="Mensaje del piloto" id="id-ag-horas-2" />
+    <element xsi:type="archimate:BusinessObject" name="Batería" id="id-ag-bat">
+      <documentation>No se da de baja sola. La del T50 no entra en el T40. Quieta más de siete días no es baja. Sobre 500 ciclos solo con autorización, sin hinchazón, celdas parejas y lote cerca de carretera.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Modelo" id="id-ag-bat-0" />
+    <element xsi:type="archimate:BusinessObject" name="Ciclos" id="id-ag-bat-1" />
+    <element xsi:type="archimate:BusinessObject" name="Alerta o hinchazón" id="id-ag-bat-2" />
+    <element xsi:type="archimate:BusinessObject" name="Observación de las cinco" id="id-ag-ind">
+      <documentation>Disponible es quien puede entrar mañana, en el aire o sobrando en tierra. No es el mediodía en FlightHub. El preventivo a tiempo no es falla. Si falta el dato, no se escribe cero.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Disponibles" id="id-ag-ind-0" />
+    <element xsi:type="archimate:BusinessObject" name="Lotes corridos por el taller" id="id-ag-ind-1" />
+    <element xsi:type="archimate:BusinessObject" name="Fallos de pre-vuelo" id="id-ag-ind-2" />
+    <element xsi:type="archimate:BusinessObject" name="Espera de Bogotá" id="id-ag-ind-3" />
+    <element xsi:type="archimate:BusinessObject" name="Retención" id="id-ag-ret">
+      <documentation>El taller no radica y no entra al portal. Un comentario de otro operador no para la flota. Si no hay papel ni foto, no se inventa el servicio.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Mensaje de seguridad" id="id-ag-ret-0" />
+    <element xsi:type="archimate:BusinessObject" name="Boletín y seriales" id="id-ag-ret-1" />
+    <element xsi:type="archimate:BusinessObject" name="Carpeta" id="id-ag-ret-2" />
+    <element xsi:type="archimate:BusinessObject" name="Pedido de repuesto" id="id-ag-ped">
+      <documentation>Sin código de bodega. Siigo no devuelve existencia. Si la pieza no está, el dron no sale aunque el lote esté prometido. La garantía no suelta el vuelo.</documentation>
+    </element>
+    <element xsi:type="archimate:BusinessObject" name="Nombre y modelo" id="id-ag-ped-0" />
+    <element xsi:type="archimate:BusinessObject" name="Aviso de llegada" id="id-ag-ped-1" />
+    <element xsi:type="archimate:BusinessObject" name="Costo si lo pasan" id="id-ag-ped-2" />
+  </folder>
+  <folder name="Application" id="id-folder-application" type="application">
+    <element xsi:type="archimate:ApplicationComponent" name="Soltar el vuelo" id="id-cmp-soltar">
+      <documentation>Dominio central. Único que pasa a verde un motor, una bomba, una batería o la electrónica.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="Intervención y orden" id="id-cmp-ot">
+      <documentation>Soporte del central. Cierra el trabajo. No pone el verde crítico.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="Horas de vuelo" id="id-cmp-horas">
+      <documentation>Soporte. Aplica la regla de una sola cifra.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="Baterías" id="id-cmp-bat">
+      <documentation>Soporte. Aparta y propone. No da de baja sola.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="Indicadores del día" id="id-cmp-ind">
+      <documentation>Soporte. Cuenta quien puede entrar mañana. No publica cero.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="Retención y expediente" id="id-cmp-ret">
+      <documentation>Soporte. Obedece el mensaje. No entra al portal.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="Pedido de repuesto" id="id-cmp-ped">
+      <documentation>Soporte. Pide por nombre y modelo. No inventa existencia.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="Identidad T40/T50" id="id-cmp-id">
+      <documentation>Genérico. Número, modelo y serial. Lo comparten los demás.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationComponent" name="App del Agras (externa)" id="id-ext-agras" />
+    <element xsi:type="archimate:ApplicationComponent" name="Canal de programación (externo)" id="id-ext-prog" />
+    <element xsi:type="archimate:ApplicationComponent" name="Novedades de campo (externo)" id="id-ext-piloto" />
+    <element xsi:type="archimate:ApplicationComponent" name="Siigo (externo)" id="id-ext-siigo" />
+    <element xsi:type="archimate:ApplicationComponent" name="Distribuidor de Bogotá (externo)" id="id-ext-dist" />
+    <element xsi:type="archimate:ApplicationComponent" name="Mensaje de seguridad (externo)" id="id-ext-seg" />
+    <element xsi:type="archimate:ApplicationComponent" name="FlightHub (sin flujo)" id="id-ext-fh" />
+    <element xsi:type="archimate:ApplicationComponent" name="Portal Aeronáutica (sin flujo)" id="id-ext-portal" />
+    <element xsi:type="archimate:ApplicationComponent" name="ICA (sin flujo)" id="id-ext-ica" />
+    <element xsi:type="archimate:ApplicationComponent" name="Habilitación (no existe)" id="id-ext-hab" />
+    <element xsi:type="archimate:ApplicationService" name="Emitir visto bueno" id="id-as-visto" />
+    <element xsi:type="archimate:ApplicationService" name="Registrar horas" id="id-as-horas" />
+    <element xsi:type="archimate:ApplicationService" name="Publicar lista" id="id-as-lista" />
+    <element xsi:type="archimate:ApplicationProcess" name="Otorgar visto bueno" id="id-ap-visto" />
+    <element xsi:type="archimate:DataObject" name="Disponibilidad del dron" id="id-do-disp">
+      <documentation>No queda en verde con orden crítica abierta. Esos cuatro subsistemas esperan al jefe. Con las 50 h cumplidas no hay jornada nueva. Hacen falta dos baterías sanas. Condicionado solo el carenado que no toca hélice ni tanque.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationProcess" name="Recibir cierre de línea" id="id-cmd-disp-0" />
+    <element xsi:type="archimate:ApplicationEvent" name="Dron en verde" id="id-evt-disp-0" />
+    <element xsi:type="archimate:ApplicationProcess" name="Otorgar visto bueno" id="id-cmd-disp-1" />
+    <element xsi:type="archimate:ApplicationEvent" name="Visto bueno otorgado" id="id-evt-disp-1" />
+    <element xsi:type="archimate:ApplicationProcess" name="Marcar sale condicionado" id="id-cmd-disp-2" />
+    <element xsi:type="archimate:ApplicationEvent" name="Salida condicionada" id="id-evt-disp-2" />
+    <element xsi:type="archimate:ApplicationProcess" name="Publicar en la lista" id="id-cmd-disp-3" />
+    <element xsi:type="archimate:ApplicationEvent" name="Incluido en la lista" id="id-evt-disp-3" />
+    <element xsi:type="archimate:ApplicationProcess" name="Devolver por pre-vuelo" id="id-cmd-disp-4" />
+    <element xsi:type="archimate:ApplicationEvent" name="Devuelto a orden" id="id-evt-disp-4" />
+    <element xsi:type="archimate:DataObject" name="Orden de trabajo" id="id-do-ot">
+      <documentation>Una entrada, una orden. Un solo número de horas. La firma crítica no pone verde. El de línea no firma motor, baja ni electrónica. Canibalizar solo desde un dron que ya está en orden, con autorización del jefe, y en las dos órdenes. Sin papel ni foto el servicio se vuelve a hacer.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationProcess" name="Abrir orden" id="id-cmd-ot-0" />
+    <element xsi:type="archimate:ApplicationEvent" name="Orden abierta" id="id-evt-ot-0" />
+    <element xsi:type="archimate:ApplicationProcess" name="Agregar hallazgo" id="id-cmd-ot-1" />
+    <element xsi:type="archimate:ApplicationEvent" name="Hallazgo en la misma orden" id="id-evt-ot-1" />
+    <element xsi:type="archimate:ApplicationProcess" name="Firmar línea" id="id-cmd-ot-2" />
+    <element xsi:type="archimate:ApplicationEvent" name="Línea firmada" id="id-evt-ot-2" />
+    <element xsi:type="archimate:ApplicationProcess" name="Cerrar trabajo crítico" id="id-cmd-ot-3" />
+    <element xsi:type="archimate:ApplicationEvent" name="Quedó pendiente de visto bueno" id="id-evt-ot-3" />
+    <element xsi:type="archimate:ApplicationProcess" name="Registrar canibalización" id="id-cmd-ot-4" />
+    <element xsi:type="archimate:ApplicationEvent" name="Pieza pasada del donante" id="id-evt-ot-4" />
+    <element xsi:type="archimate:DataObject" name="Total de horas" id="id-do-horas">
+      <documentation>No se suman piloto y app. Diez horas o más por encima: manda la app. App por debajo porque no cerraron la misión: manda la hoja. FlightHub no entra.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationProcess" name="Registrar la pantalla" id="id-cmd-horas-0" />
+    <element xsi:type="archimate:ApplicationEvent" name="Horas fijadas por la pantalla" id="id-evt-horas-0" />
+    <element xsi:type="archimate:ApplicationProcess" name="Corregir con la app" id="id-cmd-horas-1" />
+    <element xsi:type="archimate:ApplicationEvent" name="Hoja corregida" id="id-evt-horas-1" />
+    <element xsi:type="archimate:ApplicationProcess" name="Conservar la hoja" id="id-cmd-horas-2" />
+    <element xsi:type="archimate:ApplicationEvent" name="Misión abierta, hoja conservada" id="id-evt-horas-2" />
+    <element xsi:type="archimate:ApplicationProcess" name="Descartar el mensaje" id="id-cmd-horas-3" />
+    <element xsi:type="archimate:ApplicationEvent" name="Mensaje no sumado" id="id-evt-horas-3" />
+    <element xsi:type="archimate:DataObject" name="Batería" id="id-do-bat">
+      <documentation>No se da de baja sola. La del T50 no entra en el T40. Quieta más de siete días no es baja. Sobre 500 ciclos solo con autorización, sin hinchazón, celdas parejas y lote cerca de carretera.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationProcess" name="Apartar" id="id-cmd-bat-0" />
+    <element xsi:type="archimate:ApplicationEvent" name="Batería apartada" id="id-evt-bat-0" />
+    <element xsi:type="archimate:ApplicationProcess" name="Proponer baja" id="id-cmd-bat-1" />
+    <element xsi:type="archimate:ApplicationEvent" name="Baja propuesta" id="id-evt-bat-1" />
+    <element xsi:type="archimate:ApplicationProcess" name="Dar de baja" id="id-cmd-bat-2" />
+    <element xsi:type="archimate:ApplicationEvent" name="Baja decidida por el jefe" id="id-evt-bat-2" />
+    <element xsi:type="archimate:ApplicationProcess" name="Autorizar sobre 500" id="id-cmd-bat-3" />
+    <element xsi:type="archimate:ApplicationEvent" name="Excepción de pico de arroz" id="id-evt-bat-3" />
+    <element xsi:type="archimate:ApplicationProcess" name="Guardar a media carga" id="id-cmd-bat-4" />
+    <element xsi:type="archimate:ApplicationEvent" name="Quedó a media carga" id="id-evt-bat-4" />
+    <element xsi:type="archimate:DataObject" name="Observación de las cinco" id="id-do-ind">
+      <documentation>Disponible es quien puede entrar mañana, en el aire o sobrando en tierra. No es el mediodía en FlightHub. El preventivo a tiempo no es falla. Si falta el dato, no se escribe cero.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationProcess" name="Cerrar el conteo" id="id-cmd-ind-0" />
+    <element xsi:type="archimate:ApplicationEvent" name="Lista del día guardada" id="id-evt-ind-0" />
+    <element xsi:type="archimate:ApplicationProcess" name="Anotar lote del taller" id="id-cmd-ind-1" />
+    <element xsi:type="archimate:ApplicationEvent" name="Lote corrido contado" id="id-evt-ind-1" />
+    <element xsi:type="archimate:ApplicationProcess" name="Pedir el costo" id="id-cmd-ind-2" />
+    <element xsi:type="archimate:ApplicationEvent" name="Costo publicado o dejado vacío" id="id-evt-ind-2" />
+    <element xsi:type="archimate:ApplicationProcess" name="Pedir el tiempo medio" id="id-cmd-ind-3" />
+    <element xsi:type="archimate:ApplicationEvent" name="Tiempo medio rechazado" id="id-evt-ind-3" />
+    <element xsi:type="archimate:DataObject" name="Retención" id="id-do-ret">
+      <documentation>El taller no radica y no entra al portal. Un comentario de otro operador no para la flota. Si no hay papel ni foto, no se inventa el servicio.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationProcess" name="Recibir mensaje" id="id-cmd-ret-0" />
+    <element xsi:type="archimate:ApplicationEvent" name="Dron frenado por papeles" id="id-evt-ret-0" />
+    <element xsi:type="archimate:ApplicationProcess" name="Comparar seriales" id="id-cmd-ret-1" />
+    <element xsi:type="archimate:ApplicationEvent" name="Coincidencia de serial" id="id-evt-ret-1" />
+    <element xsi:type="archimate:ApplicationProcess" name="Frenar ya" id="id-cmd-ret-2" />
+    <element xsi:type="archimate:ApplicationEvent" name="Dron frenado por boletín" id="id-evt-ret-2" />
+    <element xsi:type="archimate:ApplicationProcess" name="Diferir a las 50 h" id="id-cmd-ret-3" />
+    <element xsi:type="archimate:ApplicationEvent" name="Boletín dejado para la revisión" id="id-evt-ret-3" />
+    <element xsi:type="archimate:ApplicationProcess" name="Entregar carpeta" id="id-cmd-ret-4" />
+    <element xsi:type="archimate:ApplicationEvent" name="Carpeta entregada a seguridad" id="id-evt-ret-4" />
+    <element xsi:type="archimate:DataObject" name="Pedido de repuesto" id="id-do-ped">
+      <documentation>Sin código de bodega. Siigo no devuelve existencia. Si la pieza no está, el dron no sale aunque el lote esté prometido. La garantía no suelta el vuelo.</documentation>
+    </element>
+    <element xsi:type="archimate:ApplicationProcess" name="Pedir por nombre y modelo" id="id-cmd-ped-0" />
+    <element xsi:type="archimate:ApplicationEvent" name="Pieza pedida" id="id-evt-ped-0" />
+    <element xsi:type="archimate:ApplicationProcess" name="Registrar llegada" id="id-cmd-ped-1" />
+    <element xsi:type="archimate:ApplicationEvent" name="Llegada avisada" id="id-evt-ped-1" />
+    <element xsi:type="archimate:ApplicationProcess" name="Adjuntar costo" id="id-cmd-ped-2" />
+    <element xsi:type="archimate:ApplicationEvent" name="Costo adjuntado" id="id-evt-ped-2" />
+    <element xsi:type="archimate:ApplicationProcess" name="Negar la suelta" id="id-cmd-ped-3" />
+    <element xsi:type="archimate:ApplicationEvent" name="Dron sigue en orden" id="id-evt-ped-3" />
+  </folder>
+  <folder name="Technology &amp; Physical" id="id-folder-technology" type="technology" />
+  <folder name="Motivation" id="id-folder-motivation" type="motivation">
+    <element xsi:type="archimate:Stakeholder" name="Jefe de mantenimiento" id="id-sh-jefe">
+      <documentation>Decide el visto bueno, la baja de la batería, el condicionado y si se obedece un boletín.</documentation>
+    </element>
+    <element xsi:type="archimate:Stakeholder" name="Coordinador de operaciones" id="id-sh-coord">
+      <documentation>Arma finca, piloto y dron. No abre la orden ni acorta la prueba.</documentation>
+    </element>
+    <element xsi:type="archimate:Stakeholder" name="Pilotos" id="id-sh-piloto">
+      <documentation>Reportan la novedad. No firman la orden ni devuelven el dron al servicio.</documentation>
+    </element>
+    <element xsi:type="archimate:Stakeholder" name="Técnicos de taller y de línea" id="id-sh-tec">
+      <documentation>Firman el trabajo de su subsistema. La firma no suelta el vuelo crítico.</documentation>
+    </element>
+    <element xsi:type="archimate:Stakeholder" name="Seguridad y gerencia" id="id-sh-seg">
+      <documentation>Llevan registro, póliza y el portal. Al taller le llega un mensaje, no el oficio.</documentation>
+    </element>
+    <element xsi:type="archimate:Stakeholder" name="Comercial" id="id-sh-com">
+      <documentation>Factura hectáreas en Siigo. El cliente no contrata el mantenimiento.</documentation>
+    </element>
+    <element xsi:type="archimate:Driver" name="Flota lista para mañana" id="id-dr-flota">
+      <documentation>Con caña y arroz, la referencia son 18 de 24. De 16 para abajo se corren lotes.</documentation>
+    </element>
+    <element xsi:type="archimate:Driver" name="No soltar un dron inseguro" id="id-dr-seg" />
+    <element xsi:type="archimate:Driver" name="Cumplir el manual de operaciones" id="id-dr-man">
+      <documentation>Revisión de 50 h y visita de motor a las 200 h o a los seis meses.</documentation>
+    </element>
+    <element xsi:type="archimate:Driver" name="No volar si falta la pieza" id="id-dr-pieza" />
+    <element xsi:type="archimate:Assessment" name="Bajo 16 se corren lotes" id="id-as-16" />
+    <element xsi:type="archimate:Assessment" name="Cero verdes con 50 h vencidas" id="id-as-50" />
+    <element xsi:type="archimate:Assessment" name="Sin dato, el indicador no existe" id="id-as-dato">
+      <documentation>Publicarlo en cero diría que no hubo gasto o que no hubo fallas.</documentation>
+    </element>
+    <element xsi:type="archimate:Goal" name="Lista confiable antes de las 17:00" id="id-gl-lista" />
+    <element xsi:type="archimate:Goal" name="Visto bueno antes del vuelo crítico" id="id-gl-visto">
+      <documentation>Es la decisión que no puede fallar. Si el jefe no contesta, el dron se queda.</documentation>
+    </element>
+    <element xsi:type="archimate:Goal" name="Un solo total de horas" id="id-gl-horas" />
+    <element xsi:type="archimate:Goal" name="Indicador solo si el dato existe" id="id-gl-ind" />
+    <element xsi:type="archimate:Goal" name="50 h y visita de motor al día" id="id-gl-plan" />
+    <element xsi:type="archimate:Goal" name="No salir si falta el repuesto" id="id-gl-pieza" />
+    <element xsi:type="archimate:Outcome" name="Operaciones programa solo lo publicado" id="id-oc-prog" />
+    <element xsi:type="archimate:Outcome" name="Sin respuesta, el dron se queda en tierra" id="id-oc-tierra" />
+    <element xsi:type="archimate:Principle" name="La firma no es el visto bueno" id="id-pr-firma" />
+    <element xsi:type="archimate:Principle" name="Manda lo que se cumple primero" id="id-pr-primero">
+      <documentation>En el motor, 200 h o seis meses. No se escoge el más holgado.</documentation>
+    </element>
+    <element xsi:type="archimate:Principle" name="No hay cruce entre T40 y T50" id="id-pr-cruce" />
+    <element xsi:type="archimate:Principle" name="No se publica un indicador en cero" id="id-pr-cero" />
+    <element xsi:type="archimate:Principle" name="El taller no programa, no factura y no dosifica" id="id-pr-fuera" />
+    <element xsi:type="archimate:Requirement" name="Regla de precedencia de las horas" id="id-rq-horas">
+      <documentation>Si se leyó la pantalla, esa manda. Si la app supera la hoja en 10 h o más, se corrige la hoja. Si la app quedó corta porque no cerraron la misión, se queda la hoja. No se suma el mensaje del piloto.</documentation>
+    </element>
+    <element xsi:type="archimate:Requirement" name="Verde, pendiente, condicionado y en OT" id="id-rq-est">
+      <documentation>Hélice, boquilla, filtro y lavado los cierra el de línea. Motor, bomba, batería y electrónica esperan al jefe.</documentation>
+    </element>
+    <element xsi:type="archimate:Requirement" name="Lista: número, si sale, límite y motivo" id="id-rq-lista">
+      <documentation>No se entrega el despiece ni la póliza ni la regla de las 50 h.</documentation>
+    </element>
+    <element xsi:type="archimate:Requirement" name="No armar jornada con la revisión pendiente" id="id-rq-plan">
+      <documentation>No se corta el lote ya empezado. La de 50 h no borra la visita de motor.</documentation>
+    </element>
+    <element xsi:type="archimate:Requirement" name="La baja de la batería la decide el jefe" id="id-rq-baja">
+      <documentation>Hacen falta al menos dos sanas del modelo para publicar. El kit de salida son tres.</documentation>
+    </element>
+    <element xsi:type="archimate:Requirement" name="Frenar por boletín o por papeles" id="id-rq-ret">
+      <documentation>Si el texto dice que no vuele, sale ese día. Si dice en la próxima de 50 h, no se saca antes.</documentation>
+    </element>
+    <element xsi:type="archimate:Constraint" name="Sin portal con la Aeronáutica ni con el ICA" id="id-cn-portal" />
+    <element xsi:type="archimate:Constraint" name="No reemplaza Agras, FlightHub, Siigo ni la estantería" id="id-cn-app" />
+    <element xsi:type="archimate:Constraint" name="No suma el mensaje del piloto con la app" id="id-cn-suma" />
+    <element xsi:type="archimate:Constraint" name="No recibe drones ajenos ni lleva habilitación" id="id-cn-ajeno" />
+    <element xsi:type="archimate:Meaning" name="Disponible (taller)" id="id-sig-disp">
+      <documentation>Puede entrar al programa de mañana: el que va a volar y el que sobra en verde.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Disponible (FlightHub)" id="id-sig-fh">
+      <documentation>Ubicación a mediodía. El taller no la usa para el conteo.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Horas de la hoja" id="id-sig-hoja">
+      <documentation>Un solo total. Dispara las 50 y las 200.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Horas del mensaje" id="id-sig-msg">
+      <documentation>Lo que el piloto escribe. No se vuelve a sumar si ya se leyó la pantalla.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Firma del técnico" id="id-sig-firma">
+      <documentation>Cierra su trabajo en el papel. No autoriza el siguiente vuelo crítico.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Visto bueno" id="id-sig-visto">
+      <documentation>Mensaje del jefe. Sin él, motor, bomba, batería y electrónica no salen.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Preventivo" id="id-sig-prev">
+      <documentation>Encabezado de la misma orden: 50 h o visita de motor. No abre garantía ni es una falla.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Falla" id="id-sig-falla">
+      <documentation>Daño que retiene. El preventivo a tiempo no cuenta. La de 50 h hecha tarde es falta del taller, no falla del dron.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Baja" id="id-sig-baja">
+      <documentation>La decide el jefe. Hinchar, alerta o 500 ciclos solo proponen.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Media carga" id="id-sig-media">
+      <documentation>Batería quieta más de siete días. No es una baja.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Registro aeronáutico" id="id-sig-reg">
+      <documentation>Lo hace seguridad en línea al comprar. El taller no entra al portal.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Carpeta del dron" id="id-sig-carp">
+      <documentation>Órdenes en físico. La foto de OneDrive no es la Aeronáutica.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Prometida" id="id-sig-prom">
+      <documentation>El coordinador ya comprometió el lote. No suelta el equipo.</documentation>
+    </element>
+    <element xsi:type="archimate:Meaning" name="Factura" id="id-sig-fac">
+      <documentation>Siigo, por las hectáreas que sí se volaron. No se usa para soltar un dron.</documentation>
+    </element>
+  </folder>
+  <folder name="Implementation &amp; Migration" id="id-folder-implementation_migration" type="implementation_migration" />
+  <folder name="Other" id="id-folder-other" type="other" />
+  <folder name="Relations" id="id-folder-relations" type="relations">
+    <element xsi:type="archimate:AssociationRelationship" name="persiste" id="id-r1" source="id-do-disp" target="id-ag-disp" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r2" source="id-ag-disp" target="id-ag-disp-0" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r3" source="id-ag-disp" target="id-ag-disp-1" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r4" source="id-ag-disp" target="id-ag-disp-2" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r5" source="id-ag-disp" target="id-ag-disp-3" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r6" source="id-ag-disp" target="id-ag-disp-4" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r7" source="id-cmd-disp-0" target="id-do-disp" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r8" source="id-cmd-disp-0" target="id-evt-disp-0" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r9" source="id-cmd-disp-1" target="id-do-disp" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r10" source="id-cmd-disp-1" target="id-evt-disp-1" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r11" source="id-cmd-disp-2" target="id-do-disp" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r12" source="id-cmd-disp-2" target="id-evt-disp-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r13" source="id-cmd-disp-3" target="id-do-disp" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r14" source="id-cmd-disp-3" target="id-evt-disp-3" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r15" source="id-cmd-disp-4" target="id-do-disp" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r16" source="id-cmd-disp-4" target="id-evt-disp-4" />
+    <element xsi:type="archimate:AssociationRelationship" name="persiste" id="id-r17" source="id-do-ot" target="id-ag-ot" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r18" source="id-ag-ot" target="id-ag-ot-0" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r19" source="id-ag-ot" target="id-ag-ot-1" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r20" source="id-ag-ot" target="id-ag-ot-2" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r21" source="id-ag-ot" target="id-ag-ot-3" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r22" source="id-ag-ot" target="id-ag-ot-4" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r23" source="id-cmd-ot-0" target="id-do-ot" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r24" source="id-cmd-ot-0" target="id-evt-ot-0" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r25" source="id-cmd-ot-1" target="id-do-ot" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r26" source="id-cmd-ot-1" target="id-evt-ot-1" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r27" source="id-cmd-ot-2" target="id-do-ot" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r28" source="id-cmd-ot-2" target="id-evt-ot-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r29" source="id-cmd-ot-3" target="id-do-ot" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r30" source="id-cmd-ot-3" target="id-evt-ot-3" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r31" source="id-cmd-ot-4" target="id-do-ot" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r32" source="id-cmd-ot-4" target="id-evt-ot-4" />
+    <element xsi:type="archimate:AssociationRelationship" name="persiste" id="id-r33" source="id-do-horas" target="id-ag-horas" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r34" source="id-ag-horas" target="id-ag-horas-0" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r35" source="id-ag-horas" target="id-ag-horas-1" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r36" source="id-ag-horas" target="id-ag-horas-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r37" source="id-cmd-horas-0" target="id-do-horas" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r38" source="id-cmd-horas-0" target="id-evt-horas-0" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r39" source="id-cmd-horas-1" target="id-do-horas" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r40" source="id-cmd-horas-1" target="id-evt-horas-1" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r41" source="id-cmd-horas-2" target="id-do-horas" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r42" source="id-cmd-horas-2" target="id-evt-horas-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r43" source="id-cmd-horas-3" target="id-do-horas" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r44" source="id-cmd-horas-3" target="id-evt-horas-3" />
+    <element xsi:type="archimate:AssociationRelationship" name="persiste" id="id-r45" source="id-do-bat" target="id-ag-bat" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r46" source="id-ag-bat" target="id-ag-bat-0" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r47" source="id-ag-bat" target="id-ag-bat-1" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r48" source="id-ag-bat" target="id-ag-bat-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r49" source="id-cmd-bat-0" target="id-do-bat" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r50" source="id-cmd-bat-0" target="id-evt-bat-0" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r51" source="id-cmd-bat-1" target="id-do-bat" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r52" source="id-cmd-bat-1" target="id-evt-bat-1" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r53" source="id-cmd-bat-2" target="id-do-bat" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r54" source="id-cmd-bat-2" target="id-evt-bat-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r55" source="id-cmd-bat-3" target="id-do-bat" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r56" source="id-cmd-bat-3" target="id-evt-bat-3" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r57" source="id-cmd-bat-4" target="id-do-bat" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r58" source="id-cmd-bat-4" target="id-evt-bat-4" />
+    <element xsi:type="archimate:AssociationRelationship" name="persiste" id="id-r59" source="id-do-ind" target="id-ag-ind" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r60" source="id-ag-ind" target="id-ag-ind-0" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r61" source="id-ag-ind" target="id-ag-ind-1" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r62" source="id-ag-ind" target="id-ag-ind-2" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r63" source="id-ag-ind" target="id-ag-ind-3" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r64" source="id-cmd-ind-0" target="id-do-ind" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r65" source="id-cmd-ind-0" target="id-evt-ind-0" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r66" source="id-cmd-ind-1" target="id-do-ind" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r67" source="id-cmd-ind-1" target="id-evt-ind-1" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r68" source="id-cmd-ind-2" target="id-do-ind" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r69" source="id-cmd-ind-2" target="id-evt-ind-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r70" source="id-cmd-ind-3" target="id-do-ind" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r71" source="id-cmd-ind-3" target="id-evt-ind-3" />
+    <element xsi:type="archimate:AssociationRelationship" name="persiste" id="id-r72" source="id-do-ret" target="id-ag-ret" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r73" source="id-ag-ret" target="id-ag-ret-0" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r74" source="id-ag-ret" target="id-ag-ret-1" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r75" source="id-ag-ret" target="id-ag-ret-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r76" source="id-cmd-ret-0" target="id-do-ret" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r77" source="id-cmd-ret-0" target="id-evt-ret-0" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r78" source="id-cmd-ret-1" target="id-do-ret" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r79" source="id-cmd-ret-1" target="id-evt-ret-1" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r80" source="id-cmd-ret-2" target="id-do-ret" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r81" source="id-cmd-ret-2" target="id-evt-ret-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r82" source="id-cmd-ret-3" target="id-do-ret" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r83" source="id-cmd-ret-3" target="id-evt-ret-3" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r84" source="id-cmd-ret-4" target="id-do-ret" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r85" source="id-cmd-ret-4" target="id-evt-ret-4" />
+    <element xsi:type="archimate:AssociationRelationship" name="persiste" id="id-r86" source="id-do-ped" target="id-ag-ped" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r87" source="id-ag-ped" target="id-ag-ped-0" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r88" source="id-ag-ped" target="id-ag-ped-1" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r89" source="id-ag-ped" target="id-ag-ped-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r90" source="id-cmd-ped-0" target="id-do-ped" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r91" source="id-cmd-ped-0" target="id-evt-ped-0" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r92" source="id-cmd-ped-1" target="id-do-ped" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r93" source="id-cmd-ped-1" target="id-evt-ped-1" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r94" source="id-cmd-ped-2" target="id-do-ped" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r95" source="id-cmd-ped-2" target="id-evt-ped-2" />
+    <element xsi:type="archimate:AccessRelationship" id="id-r96" source="id-cmd-ped-3" target="id-do-ped" accessType="3" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r97" source="id-cmd-ped-3" target="id-evt-ped-3" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r98" source="id-sh-jefe" target="id-dr-flota" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r99" source="id-sh-jefe" target="id-dr-seg" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r100" source="id-sh-coord" target="id-dr-flota" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r101" source="id-sh-seg" target="id-dr-man" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r102" source="id-sh-tec" target="id-dr-seg" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r103" source="id-sh-piloto" target="id-dr-seg" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r104" source="id-sh-com" target="id-dr-pieza" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r105" source="id-sh-jefe" target="id-dr-pieza" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r106" source="id-dr-flota" target="id-as-16" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r107" source="id-dr-man" target="id-as-50" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r108" source="id-dr-seg" target="id-as-50" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r109" source="id-dr-pieza" target="id-as-dato" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r110" source="id-as-16" target="id-gl-lista" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r111" source="id-as-50" target="id-gl-plan" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r112" source="id-as-dato" target="id-gl-ind" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r113" source="id-oc-prog" target="id-gl-lista" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r114" source="id-oc-tierra" target="id-gl-visto" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r115" source="id-pr-firma" target="id-rq-est" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r116" source="id-pr-primero" target="id-rq-plan" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r117" source="id-pr-cruce" target="id-rq-est" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r118" source="id-pr-cero" target="id-gl-ind" />
+    <element xsi:type="archimate:InfluenceRelationship" name="+" id="id-r119" source="id-pr-fuera" target="id-rq-lista" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r120" source="id-rq-horas" target="id-gl-horas" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r121" source="id-rq-est" target="id-gl-visto" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r122" source="id-rq-lista" target="id-gl-lista" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r123" source="id-rq-plan" target="id-gl-plan" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r124" source="id-rq-baja" target="id-gl-visto" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r125" source="id-rq-ret" target="id-gl-plan" />
+    <element xsi:type="archimate:InfluenceRelationship" name="-" id="id-r126" source="id-cn-suma" target="id-rq-horas" />
+    <element xsi:type="archimate:InfluenceRelationship" name="-" id="id-r127" source="id-cn-app" target="id-rq-horas" />
+    <element xsi:type="archimate:InfluenceRelationship" name="-" id="id-r128" source="id-cn-portal" target="id-rq-ret" />
+    <element xsi:type="archimate:InfluenceRelationship" name="-" id="id-r129" source="id-cn-ajeno" target="id-rq-est" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r130" source="id-cap-com" target="id-cap-fac" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r131" source="id-cap-prog" target="id-cap-armar" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r132" source="id-cap-prog" target="id-cap-listaop" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r133" source="id-cap-vuelo" target="id-cap-pre" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r134" source="id-cap-vuelo" target="id-cap-nov" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r135" source="id-cap-mant" target="id-cap-horas" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r136" source="id-cap-mant" target="id-cap-int" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r137" source="id-cap-mant" target="id-cap-soltar" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r138" source="id-cap-mant" target="id-cap-pub" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r139" source="id-cap-rep" target="id-cap-pedir" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r140" source="id-cap-rep" target="id-cap-stock" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r141" source="id-cap-perm" target="id-cap-pol" />
+    <element xsi:type="archimate:CompositionRelationship" id="id-r142" source="id-cap-perm" target="id-cap-freno" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r143" source="id-rs-flota" target="id-cap-mant" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r144" source="id-rs-bases" target="id-cap-mant" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r145" source="id-rs-app" target="id-cap-horas" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r146" source="id-ca-visto" target="id-cap-soltar" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r147" source="id-ca-primero" target="id-cap-int" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r148" source="id-ca-cero" target="id-cap-pub" />
+    <element xsi:type="archimate:AggregationRelationship" id="id-r149" source="id-vs" target="id-vs1" />
+    <element xsi:type="archimate:AggregationRelationship" id="id-r150" source="id-vs" target="id-vs2" />
+    <element xsi:type="archimate:AggregationRelationship" id="id-r151" source="id-vs" target="id-vs3" />
+    <element xsi:type="archimate:AggregationRelationship" id="id-r152" source="id-vs" target="id-vs4" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r153" source="id-ev-j" target="id-p-rec" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r154" source="id-p-rec" target="id-p-hor" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r155" source="id-p-hor" target="id-p-dec" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r156" source="id-ev-sin" target="id-p-dec" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r157" source="id-ev-50" target="id-p-int" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r158" source="id-p-dec" target="id-p-int" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r159" source="id-p-dec" target="id-p-pub" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r160" source="id-p-int" target="id-p-cie" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r161" source="id-p-cie" target="id-p-vis" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r162" source="id-p-vis" target="id-p-pub" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r163" source="id-p-pub" target="id-ev-lista" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r164" source="id-ev-bol" target="id-p-ret" />
+    <element xsi:type="archimate:TriggeringRelationship" id="id-r165" source="id-ev-pre" target="id-p-dec" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r166" source="id-act-linea" target="id-p-rec" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r167" source="id-act-linea" target="id-p-int" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r168" source="id-act-jefe" target="id-p-vis" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r169" source="id-act-jefe" target="id-p-pub" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r170" source="id-act-piloto" target="id-p-pre" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r171" source="id-act-coord" target="id-p-asig" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r172" source="id-act-seg" target="id-p-ret" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r173" source="id-p-rec" target="id-vs1" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r174" source="id-p-hor" target="id-vs2" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r175" source="id-p-dec" target="id-vs2" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r176" source="id-p-int" target="id-vs3" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r177" source="id-p-vis" target="id-vs3" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r178" source="id-p-pub" target="id-vs4" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r179" source="id-p-hor" target="id-cap-horas" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r180" source="id-p-vis" target="id-cap-soltar" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r181" source="id-p-pub" target="id-cap-pub" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r182" source="id-p-hor" target="id-bs-horas" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r183" source="id-p-vis" target="id-bs-visto" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r184" source="id-p-pub" target="id-bs-pub" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r185" source="id-ct-cerrar" target="id-bs-cerrar" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r186" source="id-ct-pub" target="id-bs-pub" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r187" source="id-ct-horas" target="id-bs-horas" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r188" source="id-ct-ot" target="id-bs-ot" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r189" source="id-ct-plan" target="id-bs-plan" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r190" source="id-ct-visto" target="id-bs-visto" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r191" source="id-ct-ret" target="id-bs-ret" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r192" source="id-ct-baja" target="id-bs-baja" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r193" source="id-ct-dron" target="id-bs-dron" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r194" source="id-ct-orden" target="id-bs-orden" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r195" source="id-ct-lista" target="id-bs-lista" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r196" source="id-ct-cero" target="id-bs-cero" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r197" source="id-ct-reloj" target="id-bs-reloj" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r198" source="id-ct-agras" target="id-bs-agras" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r199" source="id-ct-out" target="id-bs-out" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r200" source="id-ct-ped" target="id-bs-ped" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r201" source="id-ct-seg" target="id-bs-seg" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r202" source="id-as-visto" target="id-bs-visto" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r203" source="id-ap-visto" target="id-as-visto" />
+    <element xsi:type="archimate:AssignmentRelationship" id="id-r204" source="id-cmp-soltar" target="id-ap-visto" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r205" source="id-as-horas" target="id-bs-horas" />
+    <element xsi:type="archimate:RealizationRelationship" id="id-r206" source="id-as-lista" target="id-bs-pub" />
+    <element xsi:type="archimate:ServingRelationship" id="id-r207" source="id-as-lista" target="id-p-pub" />
+    <element xsi:type="archimate:FlowRelationship" name="Cierre, sin verde" id="id-r208" source="id-cmp-ot" target="id-cmp-soltar" />
+    <element xsi:type="archimate:FlowRelationship" name="Un solo total" id="id-r209" source="id-cmp-horas" target="id-cmp-soltar" />
+    <element xsi:type="archimate:FlowRelationship" name="Dos baterías sanas" id="id-r210" source="id-cmp-bat" target="id-cmp-soltar" />
+    <element xsi:type="archimate:FlowRelationship" name="Freno" id="id-r211" source="id-cmp-ret" target="id-cmp-soltar" />
+    <element xsi:type="archimate:AssociationRelationship" name="Número y modelo" id="id-r212" source="id-cmp-id" target="id-cmp-soltar" />
+    <element xsi:type="archimate:AssociationRelationship" name="Número y modelo" id="id-r213" source="id-cmp-id" target="id-cmp-ot" />
+    <element xsi:type="archimate:FlowRelationship" name="Lectura de pantalla" id="id-r214" source="id-ext-agras" target="id-cmp-horas" />
+    <element xsi:type="archimate:FlowRelationship" name="Novedad" id="id-r215" source="id-ext-piloto" target="id-cmp-ot" />
+    <element xsi:type="archimate:FlowRelationship" name="Lista" id="id-r216" source="id-cmp-soltar" target="id-ext-prog" />
+    <element xsi:type="archimate:FlowRelationship" name="Lote corrido" id="id-r217" source="id-ext-prog" target="id-cmp-ind" />
+    <element xsi:type="archimate:FlowRelationship" name="Nombre y modelo" id="id-r218" source="id-cmp-ped" target="id-ext-dist" />
+    <element xsi:type="archimate:FlowRelationship" name="Costo, si lo pasan" id="id-r219" source="id-ext-siigo" target="id-cmp-ped" />
+    <element xsi:type="archimate:FlowRelationship" name="No sale" id="id-r220" source="id-ext-seg" target="id-cmp-ret" />
+    <element xsi:type="archimate:FlowRelationship" name="Boletín" id="id-r221" source="id-ext-dist" target="id-cmp-ret" />
+    <element xsi:type="archimate:FlowRelationship" name="Carpeta" id="id-r222" source="id-cmp-ret" target="id-ext-seg" />
+    <element xsi:type="archimate:AssociationRelationship" name="Caminos separados" id="id-r223" source="id-cmp-horas" target="id-ext-fh" />
+    <element xsi:type="archimate:AssociationRelationship" name="Caminos separados" id="id-r224" source="id-cmp-ret" target="id-ext-portal" />
+    <element xsi:type="archimate:AssociationRelationship" name="Caminos separados" id="id-r225" source="id-cmp-soltar" target="id-ext-ica" />
+    <element xsi:type="archimate:AssociationRelationship" name="Caminos separados" id="id-r226" source="id-cmp-ot" target="id-ext-hab" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r227" source="id-rp-disp" target="id-sig-disp" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r228" source="id-rp-disp" target="id-bo-estado" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r229" source="id-rp-fh" target="id-sig-fh" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r230" source="id-rp-hoja" target="id-sig-hoja" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r231" source="id-rp-hoja" target="id-bo-horas" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r232" source="id-rp-msg" target="id-sig-msg" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r233" source="id-rp-firma" target="id-sig-firma" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r234" source="id-rp-firma" target="id-bo-orden" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r235" source="id-rp-visto" target="id-sig-visto" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r236" source="id-rp-visto" target="id-bo-estado" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r237" source="id-rp-prev" target="id-sig-prev" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r238" source="id-rp-prev" target="id-bo-orden" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r239" source="id-rp-falla" target="id-sig-falla" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r240" source="id-rp-falla" target="id-bo-orden" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r241" source="id-rp-baja" target="id-sig-baja" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r242" source="id-rp-baja" target="id-bo-bat" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r243" source="id-rp-media" target="id-sig-media" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r244" source="id-rp-media" target="id-bo-bat" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r245" source="id-rp-reg" target="id-sig-reg" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r246" source="id-rp-carp" target="id-sig-carp" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r247" source="id-rp-carp" target="id-bo-orden" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r248" source="id-rp-prom" target="id-sig-prom" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r249" source="id-rp-prom" target="id-bo-prom" />
+    <element xsi:type="archimate:AssociationRelationship" id="id-r250" source="id-rp-fac" target="id-sig-fac" />
+  </folder>
+  <folder name="Views" id="id-folder-diagrams" type="diagrams">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V6a Agregado Disponibilidad del dron" id="id-v250">
+      <child xsi:type="archimate:DiagramObject" id="id-o251" archimateElement="id-ag-disp-0">
+        <bounds x="24" y="24" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o252" archimateElement="id-ag-disp-1">
+        <bounds x="24" y="96" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o253" archimateElement="id-ag-disp-2">
+        <bounds x="24" y="168" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o254" archimateElement="id-ag-disp-3">
+        <bounds x="24" y="240" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o255" archimateElement="id-ag-disp-4">
+        <bounds x="24" y="312" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o256" archimateElement="id-ag-disp">
+        <bounds x="270" y="30" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o257" archimateElement="id-do-disp">
+        <bounds x="270" y="160" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o258" archimateElement="id-cmd-disp-0">
+        <bounds x="540" y="24" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c275" source="id-o258" target="id-o263" archimateRelationship="id-r8" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o259" archimateElement="id-cmd-disp-1">
+        <bounds x="540" y="96" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c277" source="id-o259" target="id-o264" archimateRelationship="id-r10" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o260" archimateElement="id-cmd-disp-2">
+        <bounds x="540" y="168" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c279" source="id-o260" target="id-o265" archimateRelationship="id-r12" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o261" archimateElement="id-cmd-disp-3">
+        <bounds x="540" y="240" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c281" source="id-o261" target="id-o266" archimateRelationship="id-r14" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o262" archimateElement="id-cmd-disp-4">
+        <bounds x="540" y="312" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c283" source="id-o262" target="id-o267" archimateRelationship="id-r16" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o263" archimateElement="id-evt-disp-0" targetConnections="id-c275">
+        <bounds x="800" y="24" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o264" archimateElement="id-evt-disp-1" targetConnections="id-c277">
+        <bounds x="800" y="96" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o265" archimateElement="id-evt-disp-2" targetConnections="id-c279">
+        <bounds x="800" y="168" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o266" archimateElement="id-evt-disp-3" targetConnections="id-c281">
+        <bounds x="800" y="240" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o267" archimateElement="id-evt-disp-4" targetConnections="id-c283">
+        <bounds x="800" y="312" width="230" height="52" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V6b Agregado Orden de trabajo" id="id-v284">
+      <child xsi:type="archimate:DiagramObject" id="id-o285" archimateElement="id-ag-ot-0">
+        <bounds x="24" y="24" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o286" archimateElement="id-ag-ot-1">
+        <bounds x="24" y="96" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o287" archimateElement="id-ag-ot-2">
+        <bounds x="24" y="168" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o288" archimateElement="id-ag-ot-3">
+        <bounds x="24" y="240" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o289" archimateElement="id-ag-ot-4">
+        <bounds x="24" y="312" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o290" archimateElement="id-ag-ot">
+        <bounds x="270" y="30" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o291" archimateElement="id-do-ot">
+        <bounds x="270" y="160" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o292" archimateElement="id-cmd-ot-0">
+        <bounds x="540" y="24" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c309" source="id-o292" target="id-o297" archimateRelationship="id-r24" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o293" archimateElement="id-cmd-ot-1">
+        <bounds x="540" y="96" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c311" source="id-o293" target="id-o298" archimateRelationship="id-r26" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o294" archimateElement="id-cmd-ot-2">
+        <bounds x="540" y="168" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c313" source="id-o294" target="id-o299" archimateRelationship="id-r28" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o295" archimateElement="id-cmd-ot-3">
+        <bounds x="540" y="240" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c315" source="id-o295" target="id-o300" archimateRelationship="id-r30" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o296" archimateElement="id-cmd-ot-4">
+        <bounds x="540" y="312" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c317" source="id-o296" target="id-o301" archimateRelationship="id-r32" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o297" archimateElement="id-evt-ot-0" targetConnections="id-c309">
+        <bounds x="800" y="24" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o298" archimateElement="id-evt-ot-1" targetConnections="id-c311">
+        <bounds x="800" y="96" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o299" archimateElement="id-evt-ot-2" targetConnections="id-c313">
+        <bounds x="800" y="168" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o300" archimateElement="id-evt-ot-3" targetConnections="id-c315">
+        <bounds x="800" y="240" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o301" archimateElement="id-evt-ot-4" targetConnections="id-c317">
+        <bounds x="800" y="312" width="230" height="52" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V6c Agregado Horas" id="id-v318">
+      <child xsi:type="archimate:DiagramObject" id="id-o319" archimateElement="id-ag-horas-0">
+        <bounds x="24" y="24" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o320" archimateElement="id-ag-horas-1">
+        <bounds x="24" y="96" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o321" archimateElement="id-ag-horas-2">
+        <bounds x="24" y="168" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o322" archimateElement="id-ag-horas">
+        <bounds x="270" y="30" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o323" archimateElement="id-do-horas">
+        <bounds x="270" y="160" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o324" archimateElement="id-cmd-horas-0">
+        <bounds x="540" y="24" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c337" source="id-o324" target="id-o328" archimateRelationship="id-r38" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o325" archimateElement="id-cmd-horas-1">
+        <bounds x="540" y="96" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c339" source="id-o325" target="id-o329" archimateRelationship="id-r40" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o326" archimateElement="id-cmd-horas-2">
+        <bounds x="540" y="168" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c341" source="id-o326" target="id-o330" archimateRelationship="id-r42" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o327" archimateElement="id-cmd-horas-3">
+        <bounds x="540" y="240" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c343" source="id-o327" target="id-o331" archimateRelationship="id-r44" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o328" archimateElement="id-evt-horas-0" targetConnections="id-c337">
+        <bounds x="800" y="24" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o329" archimateElement="id-evt-horas-1" targetConnections="id-c339">
+        <bounds x="800" y="96" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o330" archimateElement="id-evt-horas-2" targetConnections="id-c341">
+        <bounds x="800" y="168" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o331" archimateElement="id-evt-horas-3" targetConnections="id-c343">
+        <bounds x="800" y="240" width="230" height="52" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V6d Agregado Batería" id="id-v344">
+      <child xsi:type="archimate:DiagramObject" id="id-o345" archimateElement="id-ag-bat-0">
+        <bounds x="24" y="24" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o346" archimateElement="id-ag-bat-1">
+        <bounds x="24" y="96" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o347" archimateElement="id-ag-bat-2">
+        <bounds x="24" y="168" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o348" archimateElement="id-ag-bat">
+        <bounds x="270" y="30" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o349" archimateElement="id-do-bat">
+        <bounds x="270" y="160" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o350" archimateElement="id-cmd-bat-0">
+        <bounds x="540" y="24" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c365" source="id-o350" target="id-o355" archimateRelationship="id-r50" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o351" archimateElement="id-cmd-bat-1">
+        <bounds x="540" y="96" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c367" source="id-o351" target="id-o356" archimateRelationship="id-r52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o352" archimateElement="id-cmd-bat-2">
+        <bounds x="540" y="168" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c369" source="id-o352" target="id-o357" archimateRelationship="id-r54" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o353" archimateElement="id-cmd-bat-3">
+        <bounds x="540" y="240" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c371" source="id-o353" target="id-o358" archimateRelationship="id-r56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o354" archimateElement="id-cmd-bat-4">
+        <bounds x="540" y="312" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c373" source="id-o354" target="id-o359" archimateRelationship="id-r58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o355" archimateElement="id-evt-bat-0" targetConnections="id-c365">
+        <bounds x="800" y="24" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o356" archimateElement="id-evt-bat-1" targetConnections="id-c367">
+        <bounds x="800" y="96" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o357" archimateElement="id-evt-bat-2" targetConnections="id-c369">
+        <bounds x="800" y="168" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o358" archimateElement="id-evt-bat-3" targetConnections="id-c371">
+        <bounds x="800" y="240" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o359" archimateElement="id-evt-bat-4" targetConnections="id-c373">
+        <bounds x="800" y="312" width="230" height="52" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V6e Agregado Indicador del día" id="id-v374">
+      <child xsi:type="archimate:DiagramObject" id="id-o375" archimateElement="id-ag-ind-0">
+        <bounds x="24" y="24" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o376" archimateElement="id-ag-ind-1">
+        <bounds x="24" y="96" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o377" archimateElement="id-ag-ind-2">
+        <bounds x="24" y="168" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o378" archimateElement="id-ag-ind-3">
+        <bounds x="24" y="240" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o379" archimateElement="id-ag-ind">
+        <bounds x="270" y="30" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o380" archimateElement="id-do-ind">
+        <bounds x="270" y="160" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o381" archimateElement="id-cmd-ind-0">
+        <bounds x="540" y="24" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c395" source="id-o381" target="id-o385" archimateRelationship="id-r65" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o382" archimateElement="id-cmd-ind-1">
+        <bounds x="540" y="96" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c397" source="id-o382" target="id-o386" archimateRelationship="id-r67" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o383" archimateElement="id-cmd-ind-2">
+        <bounds x="540" y="168" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c399" source="id-o383" target="id-o387" archimateRelationship="id-r69" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o384" archimateElement="id-cmd-ind-3">
+        <bounds x="540" y="240" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c401" source="id-o384" target="id-o388" archimateRelationship="id-r71" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o385" archimateElement="id-evt-ind-0" targetConnections="id-c395">
+        <bounds x="800" y="24" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o386" archimateElement="id-evt-ind-1" targetConnections="id-c397">
+        <bounds x="800" y="96" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o387" archimateElement="id-evt-ind-2" targetConnections="id-c399">
+        <bounds x="800" y="168" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o388" archimateElement="id-evt-ind-3" targetConnections="id-c401">
+        <bounds x="800" y="240" width="230" height="52" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V6f Agregado Retención" id="id-v402">
+      <child xsi:type="archimate:DiagramObject" id="id-o403" archimateElement="id-ag-ret-0">
+        <bounds x="24" y="24" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o404" archimateElement="id-ag-ret-1">
+        <bounds x="24" y="96" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o405" archimateElement="id-ag-ret-2">
+        <bounds x="24" y="168" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o406" archimateElement="id-ag-ret">
+        <bounds x="270" y="30" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o407" archimateElement="id-do-ret">
+        <bounds x="270" y="160" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o408" archimateElement="id-cmd-ret-0">
+        <bounds x="540" y="24" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c423" source="id-o408" target="id-o413" archimateRelationship="id-r77" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o409" archimateElement="id-cmd-ret-1">
+        <bounds x="540" y="96" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c425" source="id-o409" target="id-o414" archimateRelationship="id-r79" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o410" archimateElement="id-cmd-ret-2">
+        <bounds x="540" y="168" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c427" source="id-o410" target="id-o415" archimateRelationship="id-r81" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o411" archimateElement="id-cmd-ret-3">
+        <bounds x="540" y="240" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c429" source="id-o411" target="id-o416" archimateRelationship="id-r83" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o412" archimateElement="id-cmd-ret-4">
+        <bounds x="540" y="312" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c431" source="id-o412" target="id-o417" archimateRelationship="id-r85" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o413" archimateElement="id-evt-ret-0" targetConnections="id-c423">
+        <bounds x="800" y="24" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o414" archimateElement="id-evt-ret-1" targetConnections="id-c425">
+        <bounds x="800" y="96" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o415" archimateElement="id-evt-ret-2" targetConnections="id-c427">
+        <bounds x="800" y="168" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o416" archimateElement="id-evt-ret-3" targetConnections="id-c429">
+        <bounds x="800" y="240" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o417" archimateElement="id-evt-ret-4" targetConnections="id-c431">
+        <bounds x="800" y="312" width="230" height="52" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V6g Agregado Pedido" id="id-v432">
+      <child xsi:type="archimate:DiagramObject" id="id-o433" archimateElement="id-ag-ped-0">
+        <bounds x="24" y="24" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o434" archimateElement="id-ag-ped-1">
+        <bounds x="24" y="96" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o435" archimateElement="id-ag-ped-2">
+        <bounds x="24" y="168" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o436" archimateElement="id-ag-ped">
+        <bounds x="270" y="30" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o437" archimateElement="id-do-ped">
+        <bounds x="270" y="160" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o438" archimateElement="id-cmd-ped-0">
+        <bounds x="540" y="24" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c451" source="id-o438" target="id-o442" archimateRelationship="id-r91" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o439" archimateElement="id-cmd-ped-1">
+        <bounds x="540" y="96" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c453" source="id-o439" target="id-o443" archimateRelationship="id-r93" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o440" archimateElement="id-cmd-ped-2">
+        <bounds x="540" y="168" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c455" source="id-o440" target="id-o444" archimateRelationship="id-r95" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o441" archimateElement="id-cmd-ped-3">
+        <bounds x="540" y="240" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c457" source="id-o441" target="id-o445" archimateRelationship="id-r97" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o442" archimateElement="id-evt-ped-0" targetConnections="id-c451">
+        <bounds x="800" y="24" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o443" archimateElement="id-evt-ped-1" targetConnections="id-c453">
+        <bounds x="800" y="96" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o444" archimateElement="id-evt-ped-2" targetConnections="id-c455">
+        <bounds x="800" y="168" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o445" archimateElement="id-evt-ped-3" targetConnections="id-c457">
+        <bounds x="800" y="240" width="230" height="52" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V1 Motivación" id="id-v458">
+      <child xsi:type="archimate:DiagramObject" id="id-o459" archimateElement="id-sh-jefe"><bounds x="20" y="16" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c495" source="id-o459" target="id-o465" archimateRelationship="id-r98" /></child><child xsi:type="archimate:DiagramObject" id="id-o465" archimateElement="id-dr-flota" targetConnections="id-c495"><bounds x="320" y="16" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c503" source="id-o465" target="id-o469" archimateRelationship="id-r106" /></child><child xsi:type="archimate:DiagramObject" id="id-o469" archimateElement="id-as-16" targetConnections="id-c503"><bounds x="620" y="16" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c507" source="id-o469" target="id-o472" archimateRelationship="id-r110" /></child><child xsi:type="archimate:DiagramObject" id="id-o472" archimateElement="id-gl-lista" targetConnections="id-c507 id-c510"><bounds x="920" y="16" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o478" archimateElement="id-oc-prog"><bounds x="1220" y="16" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c510" source="id-o478" target="id-o472" archimateRelationship="id-r113" /></child><child xsi:type="archimate:DiagramObject" id="id-o460" archimateElement="id-sh-coord"><bounds x="20" y="98" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c497" source="id-o460" target="id-o465b" archimateRelationship="id-r100" /></child><child xsi:type="archimate:DiagramObject" id="id-o465b" archimateElement="id-dr-flota" targetConnections="id-c497"><bounds x="320" y="98" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o461" archimateElement="id-sh-piloto"><bounds x="20" y="180" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c500" source="id-o461" target="id-o466b" archimateRelationship="id-r103" /></child><child xsi:type="archimate:DiagramObject" id="id-o466b" archimateElement="id-dr-seg" targetConnections="id-c500"><bounds x="320" y="180" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o462" archimateElement="id-sh-tec"><bounds x="20" y="262" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c499" source="id-o462" target="id-o466c" archimateRelationship="id-r102" /></child><child xsi:type="archimate:DiagramObject" id="id-o466c" archimateElement="id-dr-seg" targetConnections="id-c499"><bounds x="320" y="262" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o459b" archimateElement="id-sh-jefe"><bounds x="20" y="344" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c496" source="id-o459b" target="id-o466" archimateRelationship="id-r99" /></child><child xsi:type="archimate:DiagramObject" id="id-o466" archimateElement="id-dr-seg" targetConnections="id-c496"><bounds x="320" y="344" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c505" source="id-o466" target="id-o470" archimateRelationship="id-r108" /></child><child xsi:type="archimate:DiagramObject" id="id-o470" archimateElement="id-as-50" targetConnections="id-c505"><bounds x="620" y="344" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c508" source="id-o470" target="id-o476" archimateRelationship="id-r111" /></child><child xsi:type="archimate:DiagramObject" id="id-o476" archimateElement="id-gl-plan" targetConnections="id-c508"><bounds x="920" y="344" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o463" archimateElement="id-sh-seg"><bounds x="20" y="426" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c498" source="id-o463" target="id-o467" archimateRelationship="id-r101" /></child><child xsi:type="archimate:DiagramObject" id="id-o467" archimateElement="id-dr-man" targetConnections="id-c498"><bounds x="320" y="426" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c504" source="id-o467" target="id-o470b" archimateRelationship="id-r107" /></child><child xsi:type="archimate:DiagramObject" id="id-o470b" archimateElement="id-as-50" targetConnections="id-c504"><bounds x="620" y="426" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o459c" archimateElement="id-sh-jefe"><bounds x="20" y="508" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c502" source="id-o459c" target="id-o468" archimateRelationship="id-r105" /></child><child xsi:type="archimate:DiagramObject" id="id-o468" archimateElement="id-dr-pieza" targetConnections="id-c502"><bounds x="320" y="508" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c506" source="id-o468" target="id-o471" archimateRelationship="id-r109" /></child><child xsi:type="archimate:DiagramObject" id="id-o471" archimateElement="id-as-dato" targetConnections="id-c506"><bounds x="620" y="508" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c509" source="id-o471" target="id-o475" archimateRelationship="id-r112" /></child><child xsi:type="archimate:DiagramObject" id="id-o475" archimateElement="id-gl-ind" targetConnections="id-c509"><bounds x="920" y="508" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o464" archimateElement="id-sh-com"><bounds x="20" y="590" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c501" source="id-o464" target="id-o468b" archimateRelationship="id-r104" /></child><child xsi:type="archimate:DiagramObject" id="id-o468b" archimateElement="id-dr-pieza" targetConnections="id-c501"><bounds x="320" y="590" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o477" archimateElement="id-gl-pieza"><bounds x="920" y="590" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o483" archimateElement="id-pr-cero"><bounds x="620" y="672" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c515" source="id-o483" target="id-o475b" archimateRelationship="id-r118" /></child><child xsi:type="archimate:DiagramObject" id="id-o475b" archimateElement="id-gl-ind" targetConnections="id-c515"><bounds x="920" y="672" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o480" archimateElement="id-pr-firma"><bounds x="20" y="836" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c512" source="id-o480" target="id-o486" archimateRelationship="id-r115" /></child><child xsi:type="archimate:DiagramObject" id="id-o486" archimateElement="id-rq-est" targetConnections="id-c512"><bounds x="320" y="836" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c518" source="id-o486" target="id-o473" archimateRelationship="id-r121" /></child><child xsi:type="archimate:DiagramObject" id="id-o473" archimateElement="id-gl-visto" targetConnections="id-c518"><bounds x="620" y="836" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o482" archimateElement="id-pr-cruce"><bounds x="20" y="918" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c514" source="id-o482" target="id-o486b" archimateRelationship="id-r117" /></child><child xsi:type="archimate:DiagramObject" id="id-o486b" archimateElement="id-rq-est" targetConnections="id-c514"><bounds x="320" y="918" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o494" archimateElement="id-cn-ajeno"><bounds x="20" y="1000" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c526" source="id-o494" target="id-o486c" archimateRelationship="id-r129" /></child><child xsi:type="archimate:DiagramObject" id="id-o486c" archimateElement="id-rq-est" targetConnections="id-c526"><bounds x="320" y="1000" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o489" archimateElement="id-rq-baja"><bounds x="20" y="1082" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c521" source="id-o489" target="id-o473b" archimateRelationship="id-r124" /></child><child xsi:type="archimate:DiagramObject" id="id-o473b" archimateElement="id-gl-visto" targetConnections="id-c521"><bounds x="320" y="1082" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o479" archimateElement="id-oc-tierra"><bounds x="20" y="1164" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c511" source="id-o479" target="id-o473c" archimateRelationship="id-r114" /></child><child xsi:type="archimate:DiagramObject" id="id-o473c" archimateElement="id-gl-visto" targetConnections="id-c511"><bounds x="320" y="1164" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o481" archimateElement="id-pr-primero"><bounds x="20" y="1246" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c513" source="id-o481" target="id-o488" archimateRelationship="id-r116" /></child><child xsi:type="archimate:DiagramObject" id="id-o488" archimateElement="id-rq-plan" targetConnections="id-c513"><bounds x="320" y="1246" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c520" source="id-o488" target="id-o476b" archimateRelationship="id-r123" /></child><child xsi:type="archimate:DiagramObject" id="id-o476b" archimateElement="id-gl-plan" targetConnections="id-c520"><bounds x="620" y="1246" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o491" archimateElement="id-cn-portal"><bounds x="20" y="1328" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c525" source="id-o491" target="id-o490" archimateRelationship="id-r128" /></child><child xsi:type="archimate:DiagramObject" id="id-o490" archimateElement="id-rq-ret" targetConnections="id-c525"><bounds x="320" y="1328" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c522" source="id-o490" target="id-o476c" archimateRelationship="id-r125" /></child><child xsi:type="archimate:DiagramObject" id="id-o476c" archimateElement="id-gl-plan" targetConnections="id-c522"><bounds x="620" y="1328" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o492" archimateElement="id-cn-app"><bounds x="20" y="1410" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c524" source="id-o492" target="id-o485" archimateRelationship="id-r127" /></child><child xsi:type="archimate:DiagramObject" id="id-o485" archimateElement="id-rq-horas" targetConnections="id-c524"><bounds x="320" y="1410" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c517" source="id-o485" target="id-o474" archimateRelationship="id-r120" /></child><child xsi:type="archimate:DiagramObject" id="id-o474" archimateElement="id-gl-horas" targetConnections="id-c517"><bounds x="620" y="1410" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o493" archimateElement="id-cn-suma"><bounds x="20" y="1492" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c523" source="id-o493" target="id-o485b" archimateRelationship="id-r126" /></child><child xsi:type="archimate:DiagramObject" id="id-o485b" archimateElement="id-rq-horas" targetConnections="id-c523"><bounds x="320" y="1492" width="230" height="64" /></child><child xsi:type="archimate:DiagramObject" id="id-o484" archimateElement="id-pr-fuera"><bounds x="20" y="1574" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c516" source="id-o484" target="id-o487" archimateRelationship="id-r119" /></child><child xsi:type="archimate:DiagramObject" id="id-o487" archimateElement="id-rq-lista" targetConnections="id-c516"><bounds x="320" y="1574" width="230" height="64" /><sourceConnection xsi:type="archimate:Connection" id="id-c519" source="id-o487" target="id-o472b" archimateRelationship="id-r122" /></child><child xsi:type="archimate:DiagramObject" id="id-o472b" archimateElement="id-gl-lista" targetConnections="id-c519"><bounds x="620" y="1574" width="230" height="64" /></child><child xsi:type="archimate:Note" id="id-n527">
+        <bounds x="20" y="1738" width="980" height="80" />
+        <content>Estos elementos salen de lo que el jefe usa para decidir. La entrevista no tuvo un bloque aparte de motivación.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V2 Mapa de capacidades" id="id-v528">
+      <child xsi:type="archimate:DiagramObject" id="id-o529" archimateElement="id-cap-com">
+        <bounds x="20" y="20" width="200" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c555" source="id-o529" target="id-o530" archimateRelationship="id-r130" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o530" archimateElement="id-cap-fac" targetConnections="id-c555">
+        <bounds x="20" y="100" width="200" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o531" archimateElement="id-cap-prog">
+        <bounds x="300" y="20" width="200" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c556" source="id-o531" target="id-o532" archimateRelationship="id-r131"><bendpoint startX="-136" endX="-136" endY="-78" /><bendpoint startX="-136" startY="78" endX="-136" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c557" source="id-o531" target="id-o533" archimateRelationship="id-r132"><bendpoint startX="-136" endX="-136" endY="-142" /><bendpoint startX="-136" startY="142" endX="-136" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o532" archimateElement="id-cap-armar" targetConnections="id-c556">
+        <bounds x="300" y="100" width="200" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o533" archimateElement="id-cap-listaop" targetConnections="id-c557">
+        <bounds x="300" y="164" width="200" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o534" archimateElement="id-cap-vuelo">
+        <bounds x="580" y="20" width="200" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c558" source="id-o534" target="id-o535" archimateRelationship="id-r133"><bendpoint startX="-136" endX="-136" endY="-78" /><bendpoint startX="-136" startY="78" endX="-136" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c559" source="id-o534" target="id-o536" archimateRelationship="id-r134"><bendpoint startX="-136" endX="-136" endY="-142" /><bendpoint startX="-136" startY="142" endX="-136" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o535" archimateElement="id-cap-pre" targetConnections="id-c558">
+        <bounds x="580" y="100" width="200" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o536" archimateElement="id-cap-nov" targetConnections="id-c559">
+        <bounds x="580" y="164" width="200" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o537" archimateElement="id-cap-mant" targetConnections="id-c568 id-c569">
+        <bounds x="860" y="20" width="210" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c560" source="id-o537" target="id-o538" archimateRelationship="id-r135"><bendpoint startX="-141" endX="-141" endY="-78" /><bendpoint startX="-141" startY="78" endX="-141" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c561" source="id-o537" target="id-o539" archimateRelationship="id-r136"><bendpoint startX="-141" endX="-141" endY="-142" /><bendpoint startX="-141" startY="142" endX="-141" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c562" source="id-o537" target="id-o540" archimateRelationship="id-r137"><bendpoint startX="-141" endX="-141" endY="-206" /><bendpoint startX="-141" startY="206" endX="-141" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c563" source="id-o537" target="id-o541" archimateRelationship="id-r138"><bendpoint startX="-141" endX="-141" endY="-270" /><bendpoint startX="-141" startY="270" endX="-141" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o538" archimateElement="id-cap-horas" targetConnections="id-c560 id-c570">
+        <bounds x="860" y="100" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o539" archimateElement="id-cap-int" targetConnections="id-c561 id-c572">
+        <bounds x="860" y="164" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o540" archimateElement="id-cap-soltar" targetConnections="id-c562 id-c571">
+        <bounds x="860" y="228" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o541" archimateElement="id-cap-pub" targetConnections="id-c563 id-c573">
+        <bounds x="860" y="292" width="210" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o542" archimateElement="id-cap-rep">
+        <bounds x="1520" y="20" width="220" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c564" source="id-o542" target="id-o543" archimateRelationship="id-r139"><bendpoint startX="-146" endX="-146" endY="-78" /><bendpoint startX="-146" startY="78" endX="-146" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c565" source="id-o542" target="id-o544" archimateRelationship="id-r140"><bendpoint startX="-146" endX="-146" endY="-142" /><bendpoint startX="-146" startY="142" endX="-146" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o543" archimateElement="id-cap-pedir" targetConnections="id-c564">
+        <bounds x="1520" y="100" width="220" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o544" archimateElement="id-cap-stock" targetConnections="id-c565">
+        <bounds x="1520" y="164" width="220" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o545" archimateElement="id-cap-perm">
+        <bounds x="1820" y="20" width="230" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c566" source="id-o545" target="id-o546" archimateRelationship="id-r141"><bendpoint startX="-151" endX="-151" endY="-78" /><bendpoint startX="-151" startY="78" endX="-151" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c567" source="id-o545" target="id-o547" archimateRelationship="id-r142"><bendpoint startX="-151" endX="-151" endY="-142" /><bendpoint startX="-151" startY="142" endX="-151" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o546" archimateElement="id-cap-pol" targetConnections="id-c566">
+        <bounds x="1820" y="100" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o547" archimateElement="id-cap-freno" targetConnections="id-c567">
+        <bounds x="1820" y="164" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o548" archimateElement="id-cap-quim">
+        <bounds x="1820" y="240" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o549" archimateElement="id-rs-flota">
+        <bounds x="860" y="400" width="210" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c568" source="id-o549" target="id-o537" archimateRelationship="id-r143"><bendpoint startX="135" endX="135" endY="380" /><bendpoint startX="135" startY="-380" endX="135" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o550" archimateElement="id-rs-bases">
+        <bounds x="860" y="480" width="210" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c569" source="id-o550" target="id-o537" archimateRelationship="id-r144"><bendpoint startX="163" endX="163" endY="460" /><bendpoint startX="163" startY="-460" endX="163" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o551" archimateElement="id-rs-app">
+        <bounds x="1160" y="100" width="240" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c570" source="id-o551" target="id-o538" archimateRelationship="id-r145" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o552" archimateElement="id-ca-visto">
+        <bounds x="1160" y="228" width="250" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c571" source="id-o552" target="id-o540" archimateRelationship="id-r146" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o553" archimateElement="id-ca-primero">
+        <bounds x="1160" y="164" width="250" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c572" source="id-o553" target="id-o539" archimateRelationship="id-r147" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o554" archimateElement="id-ca-cero">
+        <bounds x="1160" y="292" width="250" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c573" source="id-o554" target="id-o541" archimateRelationship="id-r148" />
+      </child>
+      <child xsi:type="archimate:Note" id="id-n574">
+        <bounds x="20" y="580" width="700" height="80" />
+        <content>Entra: el taller lo hace y el software lo sostiene. Colinda: solo se entrega o se recibe un dato. Fuera: otro lo decide y el software no lo toca.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V3 Cadena de valor y proceso E2E" id="id-v575">
+      <child xsi:type="archimate:DiagramObject" id="id-o576" archimateElement="id-vs">
+        <bounds x="620" y="12" width="300" height="48" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c602" source="id-o576" target="id-o577" archimateRelationship="id-r149"><bendpoint startY="42" endX="659" endY="-42" /><bendpoint startX="-659" startY="42" endY="-42" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c603" source="id-o576" target="id-o578" archimateRelationship="id-r150"><bendpoint startY="42" endX="312" endY="-42" /><bendpoint startX="-312" startY="42" endY="-42" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c604" source="id-o576" target="id-o579" archimateRelationship="id-r151"><bendpoint startY="42" endX="-253" endY="-42" /><bendpoint startX="253" startY="42" endY="-42" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c605" source="id-o576" target="id-o580" archimateRelationship="id-r152"><bendpoint startY="42" endX="-709" endY="-42" /><bendpoint startX="709" startY="42" endY="-42" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o577" archimateElement="id-vs1" targetConnections="id-c602 id-c626">
+        <bounds x="16" y="96" width="190" height="48" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o578" archimateElement="id-vs2" targetConnections="id-c603 id-c627 id-c628">
+        <bounds x="254" y="96" width="408" height="48" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o579" archimateElement="id-vs3" targetConnections="id-c604 id-c629 id-c630">
+        <bounds x="710" y="96" width="626" height="48" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o580" archimateElement="id-vs4" targetConnections="id-c605 id-c631">
+        <bounds x="1384" y="96" width="190" height="48" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o581" archimateElement="id-p-rec" targetConnections="id-c606 id-c619">
+        <bounds x="16" y="190" width="190" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c607" source="id-o581" target="id-o582" archimateRelationship="id-r154" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c626" source="id-o581" target="id-o577" archimateRelationship="id-r173" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o582" archimateElement="id-p-hor" targetConnections="id-c607">
+        <bounds x="254" y="190" width="180" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c608" source="id-o582" target="id-o583" archimateRelationship="id-r155" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c627" source="id-o582" target="id-o578" archimateRelationship="id-r174" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o583" archimateElement="id-p-dec" targetConnections="id-c608 id-c609 id-c618">
+        <bounds x="482" y="190" width="180" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c611" source="id-o583" target="id-o584" archimateRelationship="id-r158" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c612" source="id-o583" target="id-o587" archimateRelationship="id-r159"><bendpoint startY="54" endX="-907" endY="54" /><bendpoint startX="907" startY="54" endY="54" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c628" source="id-o583" target="id-o578" archimateRelationship="id-r175" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o584" archimateElement="id-p-int" targetConnections="id-c611 id-c610 id-c620">
+        <bounds x="710" y="190" width="160" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c613" source="id-o584" target="id-o585" archimateRelationship="id-r160" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c629" source="id-o584" target="id-o579" archimateRelationship="id-r176" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o585" archimateElement="id-p-cie" targetConnections="id-c613">
+        <bounds x="918" y="190" width="190" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c614" source="id-o585" target="id-o586" archimateRelationship="id-r161" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o586" archimateElement="id-p-vis" targetConnections="id-c614 id-c621">
+        <bounds x="1156" y="190" width="180" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c615" source="id-o586" target="id-o587" archimateRelationship="id-r162" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c630" source="id-o586" target="id-o579" archimateRelationship="id-r177" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o587" archimateElement="id-p-pub" targetConnections="id-c612 id-c615 id-c622">
+        <bounds x="1384" y="190" width="190" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c616" source="id-o587" target="id-o596" archimateRelationship="id-r163" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c631" source="id-o587" target="id-o580" archimateRelationship="id-r178" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o588" archimateElement="id-p-ret" targetConnections="id-c617 id-c625">
+        <bounds x="1156" y="400" width="180" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o589" archimateElement="id-p-pre" targetConnections="id-c623">
+        <bounds x="16" y="700" width="240" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o590" archimateElement="id-p-asig" targetConnections="id-c624">
+        <bounds x="520" y="700" width="230" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o591" archimateElement="id-ev-j">
+        <bounds x="16" y="300" width="190" height="50" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c606" source="id-o591" target="id-o581" archimateRelationship="id-r153" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o592" archimateElement="id-ev-sin">
+        <bounds x="482" y="300" width="180" height="50" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c609" source="id-o592" target="id-o583" archimateRelationship="id-r156" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o593" archimateElement="id-ev-50">
+        <bounds x="710" y="300" width="160" height="50" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c610" source="id-o593" target="id-o584" archimateRelationship="id-r157" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o594" archimateElement="id-ev-bol">
+        <bounds x="1156" y="300" width="180" height="50" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c617" source="id-o594" target="id-o588" archimateRelationship="id-r164" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o595" archimateElement="id-ev-pre">
+        <bounds x="482" y="400" width="180" height="50" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c618" source="id-o595" target="id-o583" archimateRelationship="id-r165"><bendpoint startX="-122" endX="-122" endY="209" /><bendpoint startX="-122" startY="-209" endX="-122" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o596" archimateElement="id-ev-lista" targetConnections="id-c616">
+        <bounds x="1384" y="300" width="190" height="50" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o597" archimateElement="id-act-linea">
+        <bounds x="16" y="400" width="190" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c619" source="id-o597" target="id-o581" archimateRelationship="id-r166"><bendpoint startX="119" endX="119" endY="210" /><bendpoint startX="119" startY="-210" endX="119" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c620" source="id-o597" target="id-o584" archimateRelationship="id-r167"><bendpoint startY="54" endX="-679" endY="264" /><bendpoint startX="783" startY="54" endX="104" endY="264" /><bendpoint startX="783" startY="-210" endX="104" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o598" archimateElement="id-act-jefe">
+        <bounds x="1156" y="580" width="180" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c621" source="id-o598" target="id-o586" archimateRelationship="id-r168"><bendpoint startX="114" endX="114" endY="390" /><bendpoint startX="114" startY="-390" endX="114" /></sourceConnection>
+        <sourceConnection xsi:type="archimate:Connection" id="id-c622" source="id-o598" target="id-o587" archimateRelationship="id-r169"><bendpoint startX="354" endX="121" endY="390" /><bendpoint startX="354" startY="-390" endX="121" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o599" archimateElement="id-act-piloto">
+        <bounds x="300" y="700" width="180" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c623" source="id-o599" target="id-o589" archimateRelationship="id-r170" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o600" archimateElement="id-act-coord">
+        <bounds x="790" y="700" width="230" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c624" source="id-o600" target="id-o590" archimateRelationship="id-r171" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o601" archimateElement="id-act-seg">
+        <bounds x="1156" y="490" width="180" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c625" source="id-o601" target="id-o588" archimateRelationship="id-r172" />
+      </child>
+      <child xsi:type="archimate:Note" id="id-n632">
+        <bounds x="1060" y="680" width="500" height="110" />
+        <content>El pre-vuelo y la asignación de la finca se dibujan aparte: no son pasos de dejar el dron disponible. Si el pre-vuelo falla en lo crítico, el evento devuelve el dron a la decisión.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V4 Descomposición de servicios" id="id-v633">
+      <child xsi:type="archimate:DiagramObject" id="id-o634" archimateElement="id-bs-cerrar">
+        <bounds x="24" y="24" width="230" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o635" archimateElement="id-bs-pub">
+        <bounds x="24" y="96" width="230" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o636" archimateElement="id-bs-horas">
+        <bounds x="280" y="24" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o637" archimateElement="id-bs-ot">
+        <bounds x="280" y="96" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o638" archimateElement="id-bs-plan">
+        <bounds x="280" y="168" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o639" archimateElement="id-bs-visto">
+        <bounds x="280" y="240" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o640" archimateElement="id-bs-ret">
+        <bounds x="280" y="312" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o641" archimateElement="id-bs-baja">
+        <bounds x="280" y="384" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o642" archimateElement="id-bs-dron">
+        <bounds x="560" y="24" width="200" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o643" archimateElement="id-bs-orden">
+        <bounds x="560" y="96" width="200" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o644" archimateElement="id-bs-lista">
+        <bounds x="560" y="168" width="200" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o645" archimateElement="id-bs-cero">
+        <bounds x="790" y="24" width="230" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o646" archimateElement="id-bs-reloj">
+        <bounds x="790" y="96" width="230" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o647" archimateElement="id-bs-agras">
+        <bounds x="1050" y="24" width="280" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o648" archimateElement="id-bs-out">
+        <bounds x="1050" y="96" width="280" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o649" archimateElement="id-bs-ped">
+        <bounds x="1050" y="168" width="280" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o650" archimateElement="id-bs-seg">
+        <bounds x="1050" y="240" width="280" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o651" archimateElement="id-x-finca">
+        <bounds x="24" y="520" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o652" archimateElement="id-x-fact">
+        <bounds x="24" y="584" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o653" archimateElement="id-x-fh">
+        <bounds x="24" y="648" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o654" archimateElement="id-x-port">
+        <bounds x="24" y="712" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o655" archimateElement="id-x-ica">
+        <bounds x="24" y="776" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o656" archimateElement="id-x-hab">
+        <bounds x="24" y="840" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o657" archimateElement="id-x-stock">
+        <bounds x="24" y="904" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o658" archimateElement="id-x-fw">
+        <bounds x="24" y="968" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o659" archimateElement="id-x-gar">
+        <bounds x="24" y="1032" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o660" archimateElement="id-x-baja">
+        <bounds x="24" y="1096" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o661" archimateElement="id-x-cruce">
+        <bounds x="24" y="1160" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o662" archimateElement="id-x-pre">
+        <bounds x="24" y="1224" width="250" height="58" />
+      </child>
+      <child xsi:type="archimate:Note" id="id-n663">
+        <bounds x="560" y="520" width="460" height="90" />
+        <content>Arriba, de izquierda a derecha: proceso, tarea, entidad, utilidad y anticorrupción. Abajo: servicios que la entrevista dejó fuera. El contrato de cada servicio de arriba está en V4b.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V4b Contratos" id="id-v664">
+      <child xsi:type="archimate:DiagramObject" id="id-o665" archimateElement="id-bs-cerrar" targetConnections="id-c699">
+        <bounds x="24" y="20" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o666" archimateElement="id-ct-cerrar">
+        <bounds x="340" y="20" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c699" source="id-o666" target="id-o665" archimateRelationship="id-r185" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o667" archimateElement="id-bs-pub" targetConnections="id-c700">
+        <bounds x="24" y="82" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o668" archimateElement="id-ct-pub">
+        <bounds x="340" y="82" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c700" source="id-o668" target="id-o667" archimateRelationship="id-r186" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o669" archimateElement="id-bs-horas" targetConnections="id-c701">
+        <bounds x="24" y="144" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o670" archimateElement="id-ct-horas">
+        <bounds x="340" y="144" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c701" source="id-o670" target="id-o669" archimateRelationship="id-r187" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o671" archimateElement="id-bs-ot" targetConnections="id-c702">
+        <bounds x="24" y="206" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o672" archimateElement="id-ct-ot">
+        <bounds x="340" y="206" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c702" source="id-o672" target="id-o671" archimateRelationship="id-r188" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o673" archimateElement="id-bs-plan" targetConnections="id-c703">
+        <bounds x="24" y="268" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o674" archimateElement="id-ct-plan">
+        <bounds x="340" y="268" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c703" source="id-o674" target="id-o673" archimateRelationship="id-r189" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o675" archimateElement="id-bs-visto" targetConnections="id-c704">
+        <bounds x="24" y="330" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o676" archimateElement="id-ct-visto">
+        <bounds x="340" y="330" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c704" source="id-o676" target="id-o675" archimateRelationship="id-r190" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o677" archimateElement="id-bs-ret" targetConnections="id-c705">
+        <bounds x="24" y="392" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o678" archimateElement="id-ct-ret">
+        <bounds x="340" y="392" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c705" source="id-o678" target="id-o677" archimateRelationship="id-r191" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o679" archimateElement="id-bs-baja" targetConnections="id-c706">
+        <bounds x="24" y="454" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o680" archimateElement="id-ct-baja">
+        <bounds x="340" y="454" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c706" source="id-o680" target="id-o679" archimateRelationship="id-r192" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o681" archimateElement="id-bs-dron" targetConnections="id-c707">
+        <bounds x="24" y="516" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o682" archimateElement="id-ct-dron">
+        <bounds x="340" y="516" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c707" source="id-o682" target="id-o681" archimateRelationship="id-r193" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o683" archimateElement="id-bs-orden" targetConnections="id-c708">
+        <bounds x="24" y="578" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o684" archimateElement="id-ct-orden">
+        <bounds x="340" y="578" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c708" source="id-o684" target="id-o683" archimateRelationship="id-r194" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o685" archimateElement="id-bs-lista" targetConnections="id-c709">
+        <bounds x="24" y="640" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o686" archimateElement="id-ct-lista">
+        <bounds x="340" y="640" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c709" source="id-o686" target="id-o685" archimateRelationship="id-r195" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o687" archimateElement="id-bs-cero" targetConnections="id-c710">
+        <bounds x="24" y="702" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o688" archimateElement="id-ct-cero">
+        <bounds x="340" y="702" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c710" source="id-o688" target="id-o687" archimateRelationship="id-r196" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o689" archimateElement="id-bs-reloj" targetConnections="id-c711">
+        <bounds x="24" y="764" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o690" archimateElement="id-ct-reloj">
+        <bounds x="340" y="764" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c711" source="id-o690" target="id-o689" archimateRelationship="id-r197" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o691" archimateElement="id-bs-agras" targetConnections="id-c712">
+        <bounds x="24" y="826" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o692" archimateElement="id-ct-agras">
+        <bounds x="340" y="826" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c712" source="id-o692" target="id-o691" archimateRelationship="id-r198" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o693" archimateElement="id-bs-out" targetConnections="id-c713">
+        <bounds x="24" y="888" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o694" archimateElement="id-ct-out">
+        <bounds x="340" y="888" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c713" source="id-o694" target="id-o693" archimateRelationship="id-r199" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o695" archimateElement="id-bs-ped" targetConnections="id-c714">
+        <bounds x="24" y="950" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o696" archimateElement="id-ct-ped">
+        <bounds x="340" y="950" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c714" source="id-o696" target="id-o695" archimateRelationship="id-r200" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o697" archimateElement="id-bs-seg" targetConnections="id-c715">
+        <bounds x="24" y="1012" width="250" height="52" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o698" archimateElement="id-ct-seg">
+        <bounds x="340" y="1012" width="360" height="52" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c715" source="id-o698" target="id-o697" archimateRelationship="id-r201" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V5 Dominios" id="id-v716">
+      <child xsi:type="archimate:DiagramObject" id="id-o717" archimateElement="id-cmp-ot">
+        <bounds x="40" y="200" width="210" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c726" source="id-o717" target="id-o718" archimateRelationship="id-r208" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o719" archimateElement="id-cmp-horas">
+        <bounds x="40" y="40" width="210" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c727" source="id-o719" target="id-o718" archimateRelationship="id-r209" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o720" archimateElement="id-cmp-bat">
+        <bounds x="40" y="360" width="210" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c728" source="id-o720" target="id-o718" archimateRelationship="id-r210" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o718" archimateElement="id-cmp-soltar" targetConnections="id-c726 id-c727 id-c728 id-c729 id-c730">
+        <bounds x="560" y="200" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o722" archimateElement="id-cmp-ret">
+        <bounds x="560" y="420" width="230" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c729" source="id-o722" target="id-o718" archimateRelationship="id-r211" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o724" archimateElement="id-cmp-id">
+        <bounds x="1040" y="200" width="220" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c730" source="id-o724" target="id-o718" archimateRelationship="id-r212" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o721" archimateElement="id-cmp-ind">
+        <bounds x="1040" y="40" width="220" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o723" archimateElement="id-cmp-ped">
+        <bounds x="1040" y="360" width="220" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o725" archimateElement="id-ext-siigo">
+        <bounds x="1040" y="500" width="220" height="64" />
+      </child>
+      <child xsi:type="archimate:Note" id="id-n732">
+        <bounds x="40" y="540" width="680" height="80" />
+        <content>Central: Soltar el vuelo, al centro. A la izquierda, quien le entrega el cierre, las horas y las baterías. Abajo, el freno. A la derecha, el número y modelo. Indicadores, pedido y Siigo no deciden el verde, por eso no tienen flecha hacia el centro.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V7 Lenguaje ubicuo" id="id-v733">
+      <child xsi:type="archimate:DiagramObject" id="id-o734" archimateElement="id-rp-disp">
+        <bounds x="20" y="16" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c762" source="id-o734" target="id-o735" archimateRelationship="id-r227" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o735" archimateElement="id-sig-disp" targetConnections="id-c762">
+        <bounds x="290" y="16" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o736" archimateElement="id-rp-fh">
+        <bounds x="20" y="84" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c763" source="id-o736" target="id-o737" archimateRelationship="id-r229" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o737" archimateElement="id-sig-fh" targetConnections="id-c763">
+        <bounds x="290" y="84" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o738" archimateElement="id-rp-hoja">
+        <bounds x="20" y="152" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c764" source="id-o738" target="id-o739" archimateRelationship="id-r230" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o739" archimateElement="id-sig-hoja" targetConnections="id-c764">
+        <bounds x="290" y="152" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o740" archimateElement="id-rp-msg">
+        <bounds x="20" y="220" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c765" source="id-o740" target="id-o741" archimateRelationship="id-r232" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o741" archimateElement="id-sig-msg" targetConnections="id-c765">
+        <bounds x="290" y="220" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o742" archimateElement="id-rp-firma">
+        <bounds x="20" y="288" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c766" source="id-o742" target="id-o743" archimateRelationship="id-r233" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o743" archimateElement="id-sig-firma" targetConnections="id-c766">
+        <bounds x="290" y="288" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o744" archimateElement="id-rp-visto">
+        <bounds x="20" y="356" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c767" source="id-o744" target="id-o745" archimateRelationship="id-r235" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o745" archimateElement="id-sig-visto" targetConnections="id-c767">
+        <bounds x="290" y="356" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o746" archimateElement="id-rp-prev">
+        <bounds x="20" y="424" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c768" source="id-o746" target="id-o747" archimateRelationship="id-r237" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o747" archimateElement="id-sig-prev" targetConnections="id-c768">
+        <bounds x="290" y="424" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o748" archimateElement="id-rp-falla">
+        <bounds x="620" y="16" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c769" source="id-o748" target="id-o749" archimateRelationship="id-r239" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o749" archimateElement="id-sig-falla" targetConnections="id-c769">
+        <bounds x="890" y="16" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o750" archimateElement="id-rp-baja">
+        <bounds x="620" y="84" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c770" source="id-o750" target="id-o751" archimateRelationship="id-r241" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o751" archimateElement="id-sig-baja" targetConnections="id-c770">
+        <bounds x="890" y="84" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o752" archimateElement="id-rp-media">
+        <bounds x="620" y="152" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c771" source="id-o752" target="id-o753" archimateRelationship="id-r243" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o753" archimateElement="id-sig-media" targetConnections="id-c771">
+        <bounds x="890" y="152" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o754" archimateElement="id-rp-reg">
+        <bounds x="620" y="220" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c772" source="id-o754" target="id-o755" archimateRelationship="id-r245" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o755" archimateElement="id-sig-reg" targetConnections="id-c772">
+        <bounds x="890" y="220" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o756" archimateElement="id-rp-carp">
+        <bounds x="620" y="288" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c773" source="id-o756" target="id-o757" archimateRelationship="id-r246" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o757" archimateElement="id-sig-carp" targetConnections="id-c773">
+        <bounds x="890" y="288" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o758" archimateElement="id-rp-prom">
+        <bounds x="620" y="356" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c774" source="id-o758" target="id-o759" archimateRelationship="id-r248" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o759" archimateElement="id-sig-prom" targetConnections="id-c774">
+        <bounds x="890" y="356" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o760" archimateElement="id-rp-fac">
+        <bounds x="620" y="424" width="250" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c775" source="id-o760" target="id-o761" archimateRelationship="id-r250" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o761" archimateElement="id-sig-fac" targetConnections="id-c775">
+        <bounds x="890" y="424" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:Note" id="id-n776">
+        <bounds x="20" y="510" width="980" height="80" />
+        <content>La misma palabra, dos oficios. Disponible del taller no es la ubicación de FlightHub. Las horas del piloto no son el total de la hoja. La firma no es el visto bueno. El preventivo no es una falla. La media carga no es una baja. Prometida no es la factura. El registro de la Aeronáutica no es la carpeta.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V8 Mapa de contextos" id="id-v777">
+      <child xsi:type="archimate:DiagramObject" id="id-o780" archimateElement="id-cmp-horas">
+        <bounds x="40" y="40" width="210" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c797" source="id-o780" target="id-o778" archimateRelationship="id-r209" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o779" archimateElement="id-cmp-ot">
+        <bounds x="40" y="210" width="210" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c796" source="id-o779" target="id-o778" archimateRelationship="id-r208" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o781" archimateElement="id-cmp-bat">
+        <bounds x="40" y="380" width="210" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c798" source="id-o781" target="id-o778" archimateRelationship="id-r210" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o778" archimateElement="id-cmp-soltar" targetConnections="id-c797 id-c796 id-c798 id-c800 id-c799">
+        <bounds x="600" y="210" width="240" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o785" archimateElement="id-cmp-id">
+        <bounds x="1100" y="210" width="230" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c800" source="id-o785" target="id-o778" archimateRelationship="id-r212" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o783" archimateElement="id-cmp-ret">
+        <bounds x="600" y="430" width="240" height="64" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c799" source="id-o783" target="id-o778" archimateRelationship="id-r211" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o784" archimateElement="id-cmp-ped">
+        <bounds x="1100" y="430" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o782" archimateElement="id-cmp-ind">
+        <bounds x="1100" y="40" width="230" height="64" />
+      </child>
+      <child xsi:type="archimate:Note" id="id-n804">
+        <bounds x="40" y="560" width="1100" height="90" />
+        <content>Cliente-proveedor: horas, intervención y baterías le informan a Soltar el vuelo, y no lo ponen en verde. Núcleo compartido: número y modelo (también lo usa Intervención). Conformista: el freno de retención no se reinterpreta. Indicadores y pedido no sueltan el vuelo. Los sistemas de afuera están en V9.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V9 Interoperabilidad y anticorrupción" id="id-v815">
+      <child xsi:type="archimate:DiagramObject" id="id-o822" archimateElement="id-ext-agras">
+        <bounds x="40" y="30" width="230" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c832" source="id-o822" target="id-o816" archimateRelationship="id-r214" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o816" archimateElement="id-cmp-horas" targetConnections="id-c832">
+        <bounds x="480" y="30" width="210" height="60" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o823" archimateElement="id-ext-piloto">
+        <bounds x="40" y="170" width="230" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c833" source="id-o823" target="id-o817" archimateRelationship="id-r215" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o817" archimateElement="id-cmp-ot" targetConnections="id-c833">
+        <bounds x="480" y="170" width="210" height="60" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o818" archimateElement="id-cmp-soltar">
+        <bounds x="40" y="310" width="230" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c834" source="id-o818" target="id-o824" archimateRelationship="id-r216" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o824" archimateElement="id-ext-prog" targetConnections="id-c834">
+        <bounds x="480" y="310" width="230" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c835" source="id-o824" target="id-o819" archimateRelationship="id-r217" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o819" archimateElement="id-cmp-ind" targetConnections="id-c835">
+        <bounds x="920" y="310" width="210" height="60" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o825" archimateElement="id-ext-siigo">
+        <bounds x="40" y="450" width="230" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c837" source="id-o825" target="id-o820" archimateRelationship="id-r219" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o820" archimateElement="id-cmp-ped" targetConnections="id-c837">
+        <bounds x="480" y="450" width="210" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c836" source="id-o820" target="id-o826" archimateRelationship="id-r218" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o826" archimateElement="id-ext-dist" targetConnections="id-c836">
+        <bounds x="920" y="450" width="230" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c839" source="id-o826" target="id-o821" archimateRelationship="id-r221"><bendpoint startY="190" endX="450" /></sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o827" archimateElement="id-ext-seg" targetConnections="id-c840">
+        <bounds x="40" y="640" width="230" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c838" source="id-o827" target="id-o821" archimateRelationship="id-r220">
+          <bendpoint startY="-40" endY="-40" />
+        </sourceConnection>
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o821" archimateElement="id-cmp-ret" targetConnections="id-c839 id-c838">
+        <bounds x="480" y="640" width="210" height="60" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c840" source="id-o821" target="id-o827" archimateRelationship="id-r222">
+          <bendpoint startY="40" endY="40" />
+        </sourceConnection>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n845">
+        <bounds x="40" y="760" width="1000" height="80" />
+        <content>Cada flecha es un intercambio y queda en su fila. No hay línea con FlightHub, el portal de la Aeronáutica, el ICA ni la habilitación del técnico: con esos no se intercambia nada. Boletín baja del distribuidor a retención. No sale y carpeta van y vuelven entre seguridad y retención.</content>
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V10 Trazabilidad vertical" id="id-v846">
+      <child xsi:type="archimate:DiagramObject" id="id-o847" archimateElement="id-gl-visto" targetConnections="id-c861 id-c862">
+        <bounds x="40" y="24" width="240" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o848" archimateElement="id-oc-tierra">
+        <bounds x="40" y="110" width="240" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c861" source="id-o848" target="id-o847" archimateRelationship="id-r114" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o849" archimateElement="id-rq-est">
+        <bounds x="40" y="200" width="260" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c862" source="id-o849" target="id-o847" archimateRelationship="id-r121" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o850" archimateElement="id-cap-soltar" targetConnections="id-c863">
+        <bounds x="40" y="290" width="220" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o851" archimateElement="id-p-vis">
+        <bounds x="40" y="380" width="200" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c863" source="id-o851" target="id-o850" archimateRelationship="id-r180" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c864" source="id-o851" target="id-o852" archimateRelationship="id-r183" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o852" archimateElement="id-bs-visto" targetConnections="id-c864 id-c865">
+        <bounds x="340" y="380" width="200" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o853" archimateElement="id-as-visto" targetConnections="id-c866">
+        <bounds x="340" y="290" width="200" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c865" source="id-o853" target="id-o852" archimateRelationship="id-r202" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o854" archimateElement="id-ap-visto" targetConnections="id-c867">
+        <bounds x="340" y="200" width="200" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c866" source="id-o854" target="id-o853" archimateRelationship="id-r203" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o855" archimateElement="id-cmp-soltar">
+        <bounds x="340" y="110" width="200" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c867" source="id-o855" target="id-o854" archimateRelationship="id-r204" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o856" archimateElement="id-gl-horas" targetConnections="id-c869">
+        <bounds x="640" y="24" width="220" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o857" archimateElement="id-rq-horas" targetConnections="id-c868">
+        <bounds x="640" y="140" width="260" height="70" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c869" source="id-o857" target="id-o856" archimateRelationship="id-r120" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o858" archimateElement="id-cn-suma">
+        <bounds x="640" y="250" width="280" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c868" source="id-o858" target="id-o857" archimateRelationship="id-r126" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o859" archimateElement="id-bs-horas" targetConnections="id-c870">
+        <bounds x="640" y="360" width="200" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o860" archimateElement="id-as-horas">
+        <bounds x="640" y="460" width="180" height="56" />
+        <sourceConnection xsi:type="archimate:Connection" id="id-c870" source="id-o860" target="id-o859" archimateRelationship="id-r205" />
+      </child>
+    </element>
+    <element xsi:type="archimate:ArchimateDiagramModel" name="V11 Canvas del contexto Soltar el vuelo" id="id-v871">
+      <child xsi:type="archimate:DiagramObject" id="id-o872" archimateElement="id-cmp-soltar">
+        <bounds x="30" y="30" width="200" height="60" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o873" archimateElement="id-gl-visto">
+        <bounds x="250" y="30" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:DiagramObject" id="id-o874" archimateElement="id-pr-firma">
+        <bounds x="500" y="30" width="230" height="56" />
+      </child>
+      <child xsi:type="archimate:Note" id="id-n875">
+        <bounds x="30" y="120" width="340" height="80" />
+        <content>Propósito. Decidir si el dron entra al programa de mañana y publicarlo antes de las 17:00. No arma la finca ni promete el lote.</content>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n876">
+        <bounds x="390" y="120" width="340" height="80" />
+        <content>Clasificación. Dominio central. Es la decisión que no puede fallar aunque fallen la foto, el costo o el papel que se quedó en Espinal.</content>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n877">
+        <bounds x="30" y="220" width="700" height="70" />
+        <content>Rol. Motor, bomba, batería y electrónica no salen porque el técnico firmó, porque el lote está vendido o porque el piloto quiere terminar.</content>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n878">
+        <bounds x="30" y="310" width="700" height="50" />
+        <content>Lenguaje. Verde, en OT, pendiente de visto bueno, sale condicionado, lista de las cinco, visto bueno.</content>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n879">
+        <bounds x="30" y="380" width="700" height="60" />
+        <content>Entrante. Cierre de línea o cierre crítico, horas ya reconciliadas, dos baterías sanas del modelo, freno de seguridad o boletín ya comparado.</content>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n880">
+        <bounds x="30" y="460" width="700" height="55" />
+        <content>Saliente. Número, sale, condicionado con límite, o no sale con el motivo. Sin despiece, sin regla de 50 h y sin póliza.</content>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n881">
+        <bounds x="30" y="530" width="700" height="110" />
+        <content>Decisiones. Sin visto bueno se queda en tierra. No hay jornada nueva con las 50 h sin hacer; el lote empezado no se corta. 200 h o seis meses, lo primero. Condicionado solo el carenado que no toca hélice ni tanque. Una sola batería no entra. Lo cerrado después de las cinco puede quedar en verde y aun así no se mete solo al programa de esa madrugada.</content>
+      </child>
+      <child xsi:type="archimate:Note" id="id-n882">
+        <bounds x="30" y="660" width="700" height="80" />
+        <content>Supuestos. El coordinador no programa un dron en OT. La app del Agras sigue siendo el origen de las horas. No hay portal con la Aeronáutica. Si falta la pieza, este contexto no suelta el vuelo. El pre-vuelo no pone el verde.</content>
+      </child>
+    </element>
+  </folder>
+</archimate:model>
