@@ -18,18 +18,21 @@ La decisión que no puede fallar es soltar el vuelo. Motor, bomba, batería y el
    - [V3 Cadena de valor y proceso E2E](#v3-cadena-de-valor-y-proceso-e2e)
 4. [Descomposición de servicios](#4-descomposicion-de-servicios)
    - [V4 Descomposición de servicios](#v4-descomposicion-de-servicios)
-   - [V4b Contratos](#v4b-contratos)
+   - [V4b Contratos de plataforma y dominio](#v4b-contratos-de-plataforma-y-dominio)
+   - [V4c Contratos de las capas 4 a 7](#v4c-contratos-de-las-capas-4-a-7)
 5. [Dominios y lenguaje ubicuo](#5-dominios-y-lenguaje-ubicuo)
    - [V5 Dominios](#v5-dominios)
    - [V7 Lenguaje ubicuo](#v7-lenguaje-ubicuo)
 6. [Agregados, comandos y eventos](#6-agregados-comandos-y-eventos)
-   - [V6a Disponibilidad del dron](#v6a-disponibilidad-del-dron)
-   - [V6b Orden de trabajo](#v6b-orden-de-trabajo)
-   - [V6c Horas](#v6c-horas)
-   - [V6d Batería](#v6d-bateria)
-   - [V6e Indicador del día](#v6e-indicador-del-dia)
-   - [V6f Retención](#v6f-retencion)
-   - [V6g Pedido](#v6g-pedido)
+   - [V6a Soltar el vuelo](#v6a-soltar-el-vuelo)
+   - [V6b Intervención y orden](#v6b-intervencion-y-orden)
+   - [V6c Horas de vuelo](#v6c-horas-de-vuelo)
+   - [V6d Baterías](#v6d-baterias)
+   - [V6e Indicadores del día](#v6e-indicadores-del-dia)
+   - [V6f Retención y expediente](#v6f-retencion-y-expediente)
+   - [V6g Pedido de repuesto](#v6g-pedido-de-repuesto)
+   - [V6h Plan y despiece](#v6h-plan-y-despiece)
+   - [V6i Identidad T40/T50](#v6i-identidad-t40t50)
 7. [Mapa de contextos e interoperabilidad](#7-mapa-de-contextos-e-interoperabilidad)
    - [V8 Mapa de contextos](#v8-mapa-de-contextos)
    - [V9 Interoperabilidad y anticorrupción](#v9-interoperabilidad-y-anticorrupcion)
@@ -66,18 +69,19 @@ Se aceptó diseñar el software del taller alrededor de una sola decisión: solt
 
 ![V1 Motivación](vistas/V1-motivacion.png)
 
-La vista responde por qué existe la aplicación. Arriba está lo que el jefe usa para decidir si el día salió bien. Abajo están los principios, los requisitos y las restricciones que salieron cuando se le preguntó qué no debe hacer el software.
+La vista responde por qué existe la aplicación. Son siete franjas, una por meta. En cada franja la relación es horizontal: interesado, impulsor, evaluación, meta, resultado o principio, requerimiento y restricción. Así la flecha no cruza el dibujo. El jefe toca varias franjas porque él suelta el vuelo, pide el repuesto y publica la lista; esas tres asociaciones bajan por el costado y no se mezclan con las horizontales.
 
-Cada fila es una cadena corta, para que la relación no cruce el dibujo:
+| Franja | De dónde sale | Meta |
+|---|---|---|
+| Lista | Coordinador y cliente. Con caña y arroz abiertos, de 16 disponibles para abajo se corren lotes | Lista confiable antes de las 17:00. Operaciones programa solo lo publicado |
+| Visto bueno | Pilotos, técnicos y jefe. Un motor que falla en el pre-vuelo no se vio en la tarde, y el visto bueno se pierde en el grupo | Ningún vuelo crítico sin visto bueno del jefe. Sin respuesta, el dron se queda en tierra |
+| Horas | La misma cifra vive en la hoja, la app y el mensaje | Un solo total de horas por dron. El dato nace en su sistema: no se inventa |
+| Plan | Seguridad y el manual. La fecha de motor a veces se pasa unos días | Revisión de 50 h y visita de motor al día. Cero verdes con las 50 h vencidas |
+| Pieza | Lo que no se recupera en Palmira se pide a Bogotá, una a tres semanas | Ningún dron sale si falta el repuesto. El repuesto no se cruza entre T40 y T50 |
+| Indicador | Comercial. El costo está en Siigo y las fallas en papeles | Indicadores solo con dato real. No se publica un indicador en cero |
+| Expediente | Un servicio sin papel ni foto no existe | Expediente del dron completo para seguridad. Una orden por entrada |
 
-- El jefe y el coordinador empujan la flota lista para mañana. La evaluación es concreta: de 16 disponibles para abajo, con caña y arroz abiertos, se corren lotes. La meta es la lista confiable antes de las 17:00. El resultado es que operaciones programa solo lo que esa lista publicó.
-- Pilotos, técnicos y el jefe comparten el impulsor de no soltar un dron inseguro. Seguridad agrega el manual de operaciones. La evaluación de los dos es la misma: cero drones en verde con las 50 h ya vencidas. La meta es la visita de motor y la revisión de 50 h al día.
-- El jefe y comercial empujan el otro lado: no volar si falta la pieza. La evaluación es que, sin el dato, el indicador no existe. La meta es publicarlo solo cuando el dato está. El principio «no se publica un indicador en cero» realiza esa misma meta.
-- «No salir si falta el repuesto» queda como meta visible. No tiene una flecha propia porque el jefe no la separó de «no volar si falta la pieza»: es la misma regla, dicha para el dron y no para el número.
-
-La segunda mitad baja de principio o restricción a requisito y de ahí a la meta. La firma del técnico no es el visto bueno. El cruce T40/T50 y el dron ajeno tampoco lo son. Los tres apuntan al requisito de los estados: verde, pendiente, condicionado y en OT, y ese requisito realiza la meta del visto bueno. La baja de la batería y el «sin respuesta se queda en tierra» realizan la misma meta, porque las dos son formas de no soltar el vuelo.
-
-Horas y calendario mandan los dos. Ese principio empuja el requisito de no armar jornada con la revisión pendiente, y ese requisito realiza la meta del plan. El portal y el ICA no se consultan: la restricción empuja el freno por boletín o por papeles, que también realiza el plan, porque un papel puede parar el dron antes de las horas. No reemplazar el Agras ni sumar el mensaje del piloto realizan la meta de un solo total de horas. Que el taller no programe ni facture realiza la lista: número, si sale, límite y motivo.
+La firma del técnico no es el visto bueno: ese principio realiza la meta del visto bueno, y el requerimiento de los estados (en OT, pendiente, verde, condicionado, frenado) realiza el principio. La baja de la batería realiza la misma meta, porque sin dos sanas del modelo el dron no entra a la lista. Horas y calendario mandan los dos: gana lo que se cumpla primero, y de ahí salen la revisión al cerrar la jornada y la visita a las 200 h o a los seis meses. El taller no programa fincas ni factura: esa restricción empuja en contra de meter en la lista algo que no es del taller.
 
 <a id="3-mapa-de-capacidades-y-proceso-e2e"></a>
 
@@ -89,18 +93,15 @@ Horas y calendario mandan los dos. Ese principio empuja el requisito de no armar
 
 ![V2 Mapa de capacidades](vistas/V2-capacidades.png)
 
-El mapa es el negocio, no solo el taller. Cada capacidad de arriba se descompone hacia abajo. La composición baja por el costado del grupo para no atravesar los cuadros de en medio.
+El mapa es el negocio completo, no solo el taller. Hay once capacidades de primer nivel y, adentro, las de segundo. El color es el del mapa de capacidades del curso: rosado estratégica, morado misional, verde apoyo. El borde dorado continuo es lo que la solución soporta. El borde dorado punteado colinda: entrega o recibe un dato y el trabajo sigue siendo de otra área. El borde grueso es Mantenimiento de la flota, que se desglosa en servicios en V4.
 
-| Capacidad | Marca | Qué hace en CampoAlto |
+Mantenimiento es de apoyo. El cliente compra la hectárea fumigada, no el taller. Pasa lo mismo que con el mantenimiento de una IPS: sostiene la operación y no es lo que se le factura al cliente.
+
+| La solución la soporta | Colinda | No la toca |
 |---|---|---|
-| Comercializar la fumigación | Fuera | El cliente paga la hectárea. El mantenimiento no va en esa factura |
-| Programar la operación | Colinda | El coordinador arma finca, piloto y dron. Recibir la lista sí colinda con el taller |
-| Ejecutar la fumigación | Colinda | El vuelo es de operaciones. El pre-vuelo queda fuera de este proceso. Reportar la novedad sí entra al taller |
-| Mantener la flota para salir | Entra | Horas, intervención, soltar el vuelo y publicar la lista |
-| Abastecer el repuesto | Colinda | Pedir por nombre y modelo entra. La existencia y la factura de Siigo quedan fuera |
-| Sostener el permiso de volar | Colinda | Registro y póliza los lleva seguridad. Frenar si seguridad avisa sí entra. La dosis y el ICA están al lado y no componen esta capacidad |
+| Llevar las horas, planear 50 h y motor, intervenir, cuidar baterías, retener, soltar el vuelo, publicar la lista, medir el día | Reclamo de dosis, armar la finca con la lista, correr un lote, pre-vuelo, novedad de campo, manual, expediente, aviso de freno, costo del repuesto, puesto del técnico, telemetría, grupos de WhatsApp | Vender la hectárea, prometer el lote, ubicar en FlightHub, aplicar y lavar, registro y póliza, facturar, pilotos de temporada, cuarto de baterías, transporte, garantía |
 
-Los recursos y los cursos de acción se dibujaron al lado de la capacidad que alimentan, no en una fila suelta al otro extremo del mapa. La flota y las bases se asignan a mantener la flota. La app del Agras y la estantería se asignan a llevar las horas, porque de ahí sale la cifra y porque la existencia se ve, no se consulta. El visto bueno del jefe realiza soltar el vuelo. «200 h o seis meses, lo que ocurra primero» realiza la intervención. Dejar el indicador en blanco si falta el dato realiza publicar la lista.
+Los recursos y los cursos de acción están al lado de Mantenimiento, no en una fila suelta. La flota, las baterías, las bases, los técnicos y la app se asignan a mantener la flota. La estantería se asigna a abastecer. Cada curso de acción realiza la capacidad y la meta de V1: 50 h y 200 h o seis meses, una sola orden, visto bueno del jefe, indicador en blanco si falta el dato. Pedir por nombre y modelo, sin código de bodega, está en el modelo aunque no cabe al lado del mapa: realiza la meta de la pieza.
 
 <a id="v3-cadena-de-valor-y-proceso-e2e"></a>
 
@@ -108,31 +109,34 @@ Los recursos y los cursos de acción se dibujaron al lado de la capacidad que al
 
 ![V3 Cadena de valor y proceso E2E](vistas/V3-proceso.png)
 
-El flujo de valor es devolver el dron a disponible. Se parte en cuatro etapas, alineadas con el proceso de abajo: regreso a la base, horas y decisión, intervención y visto bueno, lista antes de las cinco.
+La cadena de valor es la fumigación por hectárea: vender, programar el lote, alistar la flota, fumigar y facturar. El proceso de punta a punta del taller vive dentro de alistar la flota. Pre-vuelo y asignación de la finca pertenecen a otras etapas y están fuera de esa caja.
 
-El camino de la tarde es una fila: recibir el dron, anotar un solo total de horas, decidir verde u orden, intervenir, cerrar el trabajo del técnico, dar el visto bueno y publicar la lista. De decidir a publicar hay un atajo por debajo de la fila. Es el día limpio: no hubo síntoma y no se cumplieron las 50 h, así que no se abre orden. El atajo no pasa por encima de los eventos.
+El camino de la tarde es una fila: recibir el dron, anotar un solo total, decidir verde u orden, intervenir, cerrar el trabajo, dar el visto bueno y publicar la lista. Hay dos uniones OR.
 
-Cada evento queda debajo del paso que dispara. La jornada cerrada abre la recepción. El síntoma o el daño, y el pre-vuelo fallido, vuelven a la decisión. Las 50 h, las 200 h o los seis meses abren la intervención. El boletín abre la retención. Publicar la lista produce el evento de lista publicada.
+- Después de decidir: si hay síntoma o se cumplieron 50 h, 200 h o seis meses, se interviene. Si no hay síntoma ni 50 h, el atajo va a publicar.
+- Después de cerrar: hélice, boquilla, filtro o lavado pueden ir a publicar. Motor, bomba, batería y electrónica pasan por el visto bueno.
 
-El pre-vuelo y la asignación de la finca están en otra fila, abajo. No son pasos de dejar el dron disponible. El piloto hace el pre-vuelo. El coordinador asigna la finca. El técnico de línea recibe e interviene. El jefe da el visto bueno y publica. Seguridad retiene. Esos actores no se apilan en una columna a la izquierda, porque desde ahí todas las flechas cruzaban el proceso.
+Los eventos quedan arriba del paso que disparan. La jornada cerrada abre la recepción. El síntoma y el cumplimiento de horas vuelven a la decisión. El boletín abre la retención, y un frenado no entra a la lista. Publicar produce la lista publicada, y con esa lista el coordinador asigna la finca. El pre-vuelo fallido vuelve a la decisión al día siguiente: no es un paso de dejar el dron disponible.
 
-Cerrar el trabajo y soltar el vuelo siguen siendo dos pasos. En hélice, boquilla, filtro y lavado el de línea cierra y puede dejar el verde. Si hubo golpe, antes va el minuto estacionario sin producto. En motor, bomba, batería y electrónica el cierre deja el dron pendiente hasta el visto bueno.
+El técnico de línea recibe, anota y decide. Palmira interviene y cierra. El jefe da el visto bueno y publica. Seguridad retiene. El piloto hace el pre-vuelo. El coordinador asigna. Comercial está en vender, no en el taller.
 
 <a id="4-descomposicion-de-servicios"></a>
 
 ## 4. Descomposición de servicios
 
-El proceso E2E se bajó en cinco capas. El enunciado pide al menos cuatro. La quinta es la anticorrupción, porque sin ella el taller volvería a copiar a mano lo que ya vive en otro sistema.
+El proceso se bajó en las siete capas de la jerarquía de servicios del curso. El enunciado pide al menos cuatro. Las tres de más son la anticorrupción, los datos maestros y la infraestructura: sin ellas el taller volvería a copiar a mano lo que ya vive en otro sistema, o a cruzar el T40 con el T50.
 
-| Capa | Servicios | Por qué ese corte |
+| Capa | Qué hay | Por qué ese corte |
 |---|---|---|
-| Proceso | Cerrar la jornada. Publicar disponibilidad | Son los dos resultados del día. El primero deja el dron listo o en orden. El segundo le dice a operaciones quién entra mañana |
-| Tarea | Registrar las horas. Llevar la orden. Cumplir 50 h y visita de motor. Emitir el visto bueno. Retener el dron. Decidir la baja de la batería | Cada uno es un trabajo que hoy hace una persona y que el software tiene que sostener sin juntarlos |
-| Entidad | Dron y despiece. Orden de trabajo. Lista del día | Son los tres papeles que el jefe reconoce. El despiece no es un cuarto papel: vive con el dron y con la orden |
-| Utilidad | No publicar cero. Reloj de horas y de seis meses | No son un proceso del taller. Son reglas que varios servicios consultan para no mentir el número ni dejar pasar la fecha |
-| Anticorrupción | Traducir la lectura del Agras. Entregar la lista a operaciones. Pedir pieza por nombre y modelo. Recibir freno de seguridad o boletín | Traducen el dato de afuera al idioma del taller, y el dato del taller al idioma de afuera. No copian el sistema vecino |
+| 1. Proceso de punta a punta | Recibir, anotar horas, decidir, intervenir, cerrar, visto bueno, publicar | Es el camino de la tarde. Lo hace el equipo del taller |
+| 2. Plataforma | Cierre de jornada, mantenimiento por subsistema, liberación del vuelo, publicación de la disponibilidad | Los cuatro resultados que el jefe reconoce. Cada uno sirve a los pasos de arriba |
+| 3. Dominio | Horas, plan y despiece, órdenes, pedidos, baterías, retenciones, disponibilidad, indicadores | Un servicio por subdominio. Sirven a la plataforma |
+| 4. Básicos de Soltar el vuelo | Órdenes críticas, visto bueno, condicionado, dos baterías, corte de las cinco, devolver por pre-vuelo | Lo mínimo del subdominio central. Los seis sirven a Gestión de la disponibilidad |
+| 5. Anticorrupción | Agras, novedad, recuento del lunes, lista, lote corrido, pedido, llegada, costo, boletín, freno, carpeta, probeta | Traducen el dato de afuera al idioma del taller, y al revés |
+| 6. Datos maestros | Drones, despiece, catálogo, puestos, bases | Los comparten varios dominios. No deciden el verde |
+| 7. Infraestructura | Permisos por puesto, avisos a los grupos, auditoría, fotos de la orden | Apoyo. No son un proceso del taller |
 
-Hélice, boquilla, filtro y lavado los cierra el técnico de línea y él mismo puede dejar el dron en verde. Motor, bomba, batería y electrónica quedan pendientes hasta el visto bueno. Esa diferencia no abre otro servicio: es una regla del servicio de visto bueno.
+Hélice, boquilla, filtro y lavado los cierra el técnico de línea y él mismo puede dejar el dron en verde. Motor, bomba, batería y electrónica quedan pendientes hasta el visto bueno. Esa diferencia no abre otro servicio: es una regla de la liberación del vuelo.
 
 <a id="v4-descomposicion-de-servicios"></a>
 
@@ -140,7 +144,9 @@ Hélice, boquilla, filtro y lavado los cierra el técnico de línea y él mismo 
 
 ![V4 Descomposición de servicios](vistas/V4-servicios.png)
 
-Arriba, de izquierda a derecha, están las cinco capas con el elemento de servicio de negocio. Abajo están los servicios que la entrevista dejó fuera. No tienen flecha hacia los de arriba a propósito: dibujar una relación de «no se implementa» ensuciaba la vista y parecía un flujo. La nota de la vista lo dice. La justificación de cada exclusión está en la tabla.
+Cada banda es una capa. La flecha de servir sube: el servicio de abajo le presta el comportamiento al de arriba. Los seis básicos entran a Gestión de la disponibilidad porque esa es la decisión. Las capas 5, 6 y 7 no se cruzan con flechas en el dibujo: cada una sirve a varios dominios y la madeja tapaba los nombres. Esas relaciones están en el modelo.
+
+Abajo, en gris, está lo que no se implementa. No tiene flecha hacia arriba a propósito.
 
 | No se implementa | Por qué |
 |---|---|
@@ -156,44 +162,48 @@ Arriba, de izquierda a derecha, están las cinco capas con el elemento de servic
 | Baja automática de batería | A los 500 ciclos se propone. La baja la firma el jefe |
 | Cruzar pieza T40/T50 | El repuesto no se cruza. El T50 no sale con una sola bomba |
 | Hacer el pre-vuelo | Es de la madrugada, ya asignado. Si falla lo crítico, el dron vuelve a orden |
+| Recibir drones de afuera | Comercial dice que no. Registro, póliza y repuesto son de estos 24 |
 
-Los actores, el proceso y los eventos no se repiten en esta vista. Están en V3. Aquí el corte es el servicio.
+<a id="v4b-contratos-de-plataforma-y-dominio"></a>
 
-<a id="v4b-contratos"></a>
+### V4b Contratos de plataforma y dominio
 
-### V4b Contratos
+![V4b Contratos de plataforma y dominio](vistas/V4b-contratos.png)
 
-![V4b Contratos](vistas/V4b-contratos.png)
+El contrato se escribe antes de la aplicación. Cada fila es rol, función, servicio y contrato. El contrato muestra entra, sale y error. Al lado, cuando el servicio guarda algo, está el objeto de negocio.
 
-Cada servicio que sí entra tiene un contrato, elemento pasivo de negocio, al lado. La asociación es el contrato de ese servicio. No se contrató lo que quedó fuera: no hay contrato de FlightHub, de portal ni de habilitación.
+| Rol | Servicio | Entra | Sale | Error |
+|---|---|---|---|---|
+| Firmante de línea | Cierre de jornada | Número, horas, novedad y foto si hay | Verde, o en OT con la orden abierta | App con menos horas por misión sin cerrar: se queda la hoja |
+| Firmante de línea | Gestión de horas | Pantalla, app o mensaje | Un solo total y horas desde la última 50 | Mensaje con pantalla ya leída: no se suma |
+| Firmante del subsistema | Mantenimiento por subsistema | Orden abierta y su motivo | Líneas firmadas; cierre de línea o cierre crítico | Sin papel ni foto, el servicio se vuelve a hacer |
+| Firmante del subsistema | Gestión de órdenes | Hallazgo, pieza y serial | La misma orden, con cada línea firmada | Firma fuera del subsistema: no se acepta |
+| Responsable de baterías | Gestión de baterías | Alerta, hinchazón, ciclos y rendimiento | Sana, apartada, media carga, propuesta o baja firmada | Baja sin firma del jefe: queda propuesta |
+| Suelta el vuelo | Liberación del vuelo | Cierre crítico, horas al día, dos baterías y ningún freno | Verde, condicionado con límite, o se queda con el motivo | Sin respuesta del jefe, se queda en tierra |
+| Suelta el vuelo | Gestión de la disponibilidad | Cierres, horas, plan, baterías y frenos | en OT, pendiente, verde, condicionado o frenado | Orden crítica abierta: no pasa a verde |
+| Suelta el vuelo | Gestión de retenciones | Mensaje de seguridad o boletín | Frenado, o boletín dejado para la próxima 50 | Comentario de otro operador: no frena |
+| Suelta el vuelo | Publicación | Estado de los 24 a las 17:00 | Número, si sale, límite o motivo | Lo de después del corte no entra solo a la madrugada |
+| Planea el taller | Plan y despiece | Horas, fecha de motor y despiece | Revisión vencida, con la pieza que toca | Pieza de otro modelo: se rechaza |
+| Planea el taller | Pedidos | Pieza por nombre y modelo | Pedido, aviso de llegada y costo si lo pasan | Pieza que no llegó: el dron sigue en orden |
+| Planea el taller | Indicadores | Lista, lotes, fallos, espera de Bogotá y costo | Observación del día | Dato que falta: queda vacío, nunca en cero |
 
-El contrato no es una API inventada. Es el dato que el jefe ya intercambia, escrito antes de construir la aplicación.
+<a id="v4c-contratos-de-las-capas-4-a-7"></a>
 
-| Servicio | Entra | Sale |
-|---|---|---|
-| Cierre de jornada | Número, horas de la pantalla o de la hoja ya corregida, síntoma y foto si hay | Verde o en OT |
-| Publicar disponibilidad | Quién puede entrar mañana | Número, si sale, límite o motivo. Nada después de las cinco se mete solo al programa de esa madrugada |
-| Registrar las horas | Pantalla, app o mensaje | Un solo total. El mensaje no se suma |
-| Llevar la orden | Hallazgo, serial, motivo de entrada | La misma orden. Sin papel ni foto el servicio se vuelve a hacer |
-| Plan de 50 h y de motor | Horas y fecha de la última visita | Entra al cerrar la jornada. Gana lo que se cumpla primero |
-| Visto bueno | Cierre de motor, bomba, batería o electrónica | Verde, condicionado con límite, o se queda |
-| Retener | Mensaje de seguridad o boletín con serial | Frenado. No hay radicación |
-| Baja de batería | Alerta, hinchazón o ciclos | La baja firmada, o la propuesta que el jefe todavía no firmó |
-| Dron y despiece | Número, modelo, serial | Ninguna pieza del otro modelo |
-| Orden de trabajo | Líneas, seriales, horas | Un papel |
-| Lista del día | El corte de las cinco | Lo que operaciones puede leer |
-| No publicar cero | Costo o conteo de fallas, si existen | Vacío si no existen. Nunca cero |
-| Reloj | Horas y fecha | 50 h, 200 h o seis meses |
-| Lectura del Agras | Horas, caudal, alerta, ciclos | La cifra ya reconciliada. La telemetría no entra sola |
-| Lista hacia operaciones | La lista | Número, si sale, límite, motivo. Sin despiece y sin póliza |
-| Pedido | Nombre y modelo | Aviso de llegada, si alguien avisa. El costo solo si administración lo pasa |
-| Freno | «Este dron no sale» o el boletín | Se obedece. No se reinterpreta |
+### V4c Contratos de las capas 4 a 7
+
+![V4c Contratos de las capas 4 a 7](vistas/V4c-contratos.png)
+
+La misma idea para lo que no cabe en V4b. A la izquierda, los seis básicos de Soltar el vuelo y los cinco de datos maestros. A la derecha, la anticorrupción: ahí el contrato agrega dirección y frecuencia, porque el dato cruza de sistema. Abajo de esa columna, la infraestructura.
+
+Los básicos protegen la regla. Consultar órdenes críticas rechaza un dron sin número. El visto bueno de alguien que no es el jefe no se registra. El condicionado que toca hélice o tanque se niega. Menos de dos baterías sanas no entra a la lista. Lo cerrado después de las cinco no se mete solo. Una hélice del kit se resuelve sin volver a orden.
+
+En la anticorrupción el ritmo es el de la entrevista: la pantalla se lee a diario, el recuento de Buga y Espinal es el lunes, la lista sale antes de las 17:00, el costo y el boletín son eventuales, la carpeta va una vez al año o si hubo incidente. El mensaje de seguridad no se reinterpreta. Un comentario de otro operador no es un boletín.
 
 <a id="5-dominios-y-lenguaje-ubicuo"></a>
 
 ## 5. Dominios y lenguaje ubicuo
 
-Los dominios no se cortaron por pieza. Se cortaron por la decisión. El jefe tiene varios oficios en el mismo día, pero solo uno no puede fallar.
+Los dominios no se cortaron por pieza. Se cortaron por la decisión, sacando del proceso los objetos, los pasos y los eventos que cambian juntos.
 
 <a id="v5-dominios"></a>
 
@@ -201,19 +211,22 @@ Los dominios no se cortaron por pieza. Se cortaron por la decisión. El jefe tie
 
 ![V5 Dominios](vistas/V5-dominios.png)
 
-Los contextos son componentes de aplicación. La flecha dice qué le entrega cada uno al central. Indicadores, pedido y Siigo están en la vista y no tienen flecha: alimentan otras decisiones y no ponen el verde.
+V5 clasifica. No es el mapa de contextos: aquí no hay flecha de un dominio a otro. Cada caja es el cúmulo que salió del proceso, con su componente de aplicación y lo que se extrajo (objeto, paso o evento). El patrón entre contextos está en V8.
 
-| Dominio | Clase | Argumento |
-|---|---|---|
-| Soltar el vuelo | Central | Es la decisión que no puede fallar aunque fallen la foto, el costo o el papel que se quedó en Espinal |
-| Intervención y orden | Soporte | Cierra el trabajo. Entrega el cierre, sin verde. No pone el verde crítico |
-| Horas de vuelo | Soporte | Entrega un solo total. No decide si el dron sale |
-| Baterías | Soporte | Entrega que hay dos sanas del modelo. La baja la firma el jefe, dentro de soltar el vuelo |
-| Indicadores del día | Soporte | Mira el resultado. No suelta el vuelo |
-| Retención y expediente | Soporte | Entrega el freno. No negocia el mensaje |
-| Pedido de repuesto | Soporte | Si la pieza no llegó, el central no suelta. El pedido no marca el verde |
-| Identidad T40/T50 | Genérico | Número, modelo y serial. Lo usan el central y la orden para que no se cruce pieza |
-| Siigo | Genérico y externo | Factura y, si la piden, el costo. No devuelve existencia |
+| Dominio | Clase | De qué se extrajo | Argumento |
+|---|---|---|---|
+| Soltar el vuelo | Central | Disponibilidad, lista, decidir, visto bueno, publicar, pre-vuelo fallido, lista publicada | Solo aquí se pasa a verde un motor, una bomba, una batería o la electrónica |
+| Plan y despiece | Soporte | Despiece, plan, evento de 50 h, 200 h o seis meses | Dice qué pieza toca y cuándo vence. No suelta el vuelo |
+| Intervención y orden | Soporte | Orden, intervenir, cerrar, síntoma | Cierra el trabajo. No pone el verde crítico |
+| Horas de vuelo | Soporte | Total de horas, recibir, anotar, jornada cerrada | Entrega un solo total. No decide si sale |
+| Baterías | Soporte | La batería | Dice si hay dos sanas. La baja la firma el jefe |
+| Retención y expediente | Soporte | Retención, el proceso de retener, el boletín | Obedece el freno. No radica |
+| Pedido de repuesto | Soporte | El pedido | Pide por nombre y modelo. Si no llegó, el dron sigue en orden |
+| Indicadores del día | Soporte | La observación de las cinco | Mira el resultado. No publica cero |
+| Identidad T40/T50 | Genérico | Número, modelo y serial | Se construye pequeño y lo comparten todos |
+| Compras y facturación | Genérico | Siigo y la factura de compra | Ya está comprado |
+| Telemetría del equipo | Genérico | La app del Agras y la lectura del control | La da el fabricante |
+| Ubicación del equipo | Genérico | FlightHub | Es de operaciones. El taller no lo integra |
 
 <a id="v7-lenguaje-ubicuo"></a>
 
@@ -221,150 +234,197 @@ Los contextos son componentes de aplicación. La flecha dice qué le entrega cad
 
 ![V7 Lenguaje ubicuo](vistas/V7-lenguaje.png)
 
-Cada fila es la misma palabra en dos oficios. A la izquierda, la representación: cómo se dice en el papel, en el grupo o en la pantalla. A la derecha, el significado que el software va a usar. Cuando la palabra también nombra un objeto del taller, la representación queda asociada a ese objeto en el modelo.
+A la izquierda, lo que la misma palabra significa en otro oficio. Al centro, el término tal como se dice. A la derecha, el significado que va a usar el software, con su dominio y un ejemplo, y el concepto del modelo al que corresponde.
 
-| Se dice | En el taller significa | No significa |
+Seis palabras cambian de oficio. El resto tiene un solo significado y por eso no tienen caja gris.
+
+| Se dice | En el software del taller | No significa |
 |---|---|---|
-| Disponible | Puede entrar al programa de mañana, vuele o sobre en tierra | La ubicación que operaciones ve en FlightHub a mediodía |
-| Horas | El total de la hoja, ya reconciliado | El mensaje del piloto sumado otra vez a la app |
-| Firma | El técnico terminó esa línea | El visto bueno del jefe |
-| Visto bueno | El mensaje del jefe en «Programa» para motor, bomba, batería o electrónica | La firma del papel |
-| Preventivo | Orden encabezada «50 h» o «visita de motor», dentro de los límites | Una falla |
-| Falla | El hallazgo que retiene el dron dentro de esa misma orden | El preventivo hecho a tiempo |
-| Baja | La decide el jefe | La media carga de una batería quieta más de siete días |
-| Registro | El de la Aeronáutica, que lleva seguridad | La carpeta física del dron |
-| Prometida | El coordinador ya le dijo al cliente que se entra al lote | La factura de hectáreas en Siigo |
+| Disponible | Puede entrar al programa de mañana, vuele o sobre en tierra | Dónde está el equipo en FlightHub a mediodía |
+| Horas | Un solo total ya reconciliado | Lo que el piloto escribe en «Novedades campo» |
+| Verde | Estado que deja programar al dron | Un verde de las 18:00, que no entra solo a la madrugada |
+| Falla | Hallazgo que retiene al dron dentro de la misma orden | El preventivo a tiempo, contado para un tiempo medio entre fallas |
+| Registro | La carpeta física: órdenes, copia del registro y la póliza | El registro del Agras ante la Aeronáutica |
+| Prometida | El coordinador ya le dijo al cliente que se entra al lote. No suelta el dron | Las hectáreas facturadas en Siigo |
+
+Las que tienen un solo sentido en el taller: en OT, pendiente de visto bueno, visto bueno, firma, sale condicionado, frenado, lista de las cinco, preventivo, probeta, de a par, canibalizar, baja, media carga y lote corrido. La firma cierra la línea y no suelta lo crítico. El visto bueno es el mensaje del jefe en «Programa». Canibalizar es pasar una pieza de un dron que ya está en orden, anotada en las dos órdenes. Media carga no es baja: es cómo se guarda una batería quieta más de siete días.
 
 <a id="6-agregados-comandos-y-eventos"></a>
 
 ## 6. Agregados, comandos y eventos
 
-Hay un agregado por decisión que el software tiene que proteger, no uno por cada pieza del dron. La hélice, la boquilla y el filtro viven como líneas de la orden. El motor, la bomba, la batería y la electrónica cambian quién puede poner el verde, y eso lo protege Disponibilidad, no un agregado por subsistema.
+Hay un agregado por decisión que el software tiene que proteger, no uno por cada pieza del dron. La hélice y la boquilla viven como líneas de la orden y como piezas del despiece. Quién puede poner el verde lo protege Disponibilidad.
 
-En cada vista V6 la raíz es el objeto de datos. A la izquierda están los conceptos que componen el agregado. A la derecha, el comando (proceso de aplicación) dispara el evento. La invariante está en la documentación del objeto, no en una flecha extra: una flecha no puede decir «esto no puede pasar».
+En cada vista V6 la raíz es el objeto de datos, marcada como raíz del agregado. Adentro están las entidades y los objetos de valor. La nota amarilla es la invariante: una flecha no puede decir «esto no puede pasar». El comando, en azul, dispara el evento, en amarillo. A la izquierda entra lo que dispara otro agregado. A la derecha sale a quién dispara este.
 
-<a id="v6a-disponibilidad-del-dron"></a>
+<a id="v6a-soltar-el-vuelo"></a>
 
-### V6a Disponibilidad del dron
+### V6a Soltar el vuelo
 
-![V6a Disponibilidad del dron](vistas/V6a-disponibilidad.png)
+![V6a Soltar el vuelo](vistas/V6a-disponibilidad.png)
 
-Raíz: disponibilidad del dron. Adentro: estado, horas desde la 50, fecha de visita de motor, baterías sanas del modelo y límite condicionado.
+Dos agregados. La disponibilidad guarda el estado, el visto bueno, el límite, las baterías sanas y el número. La lista de las cinco guarda el renglón y el corte de las 17:00.
 
-No queda en verde con orden crítica abierta. Con las 50 h cumplidas no hay jornada nueva. Hacen falta dos baterías sanas. Condicionado solo el carenado que no toca hélice ni tanque, y lo escribe el jefe.
+No pasa a verde con una orden abierta de motor, bomba, batería o electrónica. Lo crítico solo pasa con el visto bueno. Con las 50 h cumplidas no hay jornada nueva. Con la visita de motor vencida no hay verde hasta la visita y el visto bueno. Con menos de dos baterías sanas no entra a la lista. Condicionado solo el carenado que no toca hélice ni tanque, y lo escribe el jefe. Frenado no sale, lleve las horas que lleve.
 
 | Comando | Evento |
 |---|---|
 | Recibir cierre de línea | Dron en verde |
-| Otorgar visto bueno | Visto bueno otorgado |
+| Recibir cierre crítico | Quedó pendiente de visto bueno |
+| Dar el visto bueno | Visto bueno otorgado |
 | Marcar sale condicionado | Salida condicionada |
-| Publicar en la lista | Incluido en la lista |
+| Frenar por retención | Dron frenado |
 | Devolver por pre-vuelo | Devuelto a orden |
+| Cortar la lista de las cinco | Lista publicada |
+| Anotar verde después del corte | Verde fuera de la lista |
 
-<a id="v6b-orden-de-trabajo"></a>
+<a id="v6b-intervencion-y-orden"></a>
 
-### V6b Orden de trabajo
+### V6b Intervención y orden
 
-![V6b Orden de trabajo](vistas/V6b-orden.png)
+![V6b Intervención y orden](vistas/V6b-orden.png)
 
-Raíz: la orden. Adentro: la línea de intervención, el serial, el motivo de entrada, las horas anotadas y el par de hélice o boquilla.
+Raíz: la orden. Adentro: la línea, el motivo de entrada, un solo número de horas, el papel y la foto, y la canibalización.
 
-Una entrada, un papel. Un solo número de horas. La firma crítica no pone verde. El de línea no firma motor, baja ni electrónica. Canibalizar solo desde un dron que ya está en orden, autorizado por el jefe y anotado en las dos órdenes. Sin papel ni foto, el servicio se vuelve a hacer.
+Una entrada, una orden. El hallazgo se agrega, no se abre otro papel. Firma quien hizo el trabajo, y solo en su subsistema. La firma del cierre crítico no pone verde. Si hubo golpe, minuto estacionario sin producto antes del verde de línea. Canibalizar solo desde un dron que ya está en orden, con autorización del jefe y en las dos órdenes.
 
-| Comando | Evento |
-|---|---|
-| Abrir orden | Orden abierta |
-| Agregar hallazgo | Hallazgo en la misma orden |
-| Firmar línea | Línea firmada |
-| Cerrar trabajo crítico | Quedó pendiente de visto bueno |
-| Registrar canibalización | Pieza pasada del donante |
+| Comando | Evento | Hacia dónde sale |
+|---|---|---|
+| Abrir orden | Orden abierta | |
+| Agregar hallazgo | Hallazgo en la misma orden | |
+| Firmar línea | Línea firmada | |
+| Cerrar trabajo de línea | Cierre de línea registrado | Recibir cierre de línea |
+| Cerrar trabajo crítico | Cierre crítico registrado | Recibir cierre crítico |
+| Anotar pieza que falta | Pieza faltante anotada | Pedir por nombre y modelo |
+| Registrar canibalización | Pieza pasada del donante | |
 
-<a id="v6c-horas"></a>
+<a id="v6c-horas-de-vuelo"></a>
 
-### V6c Horas
+### V6c Horas de vuelo
 
-![V6c Horas](vistas/V6c-horas.png)
+![V6c Horas de vuelo](vistas/V6c-horas.png)
 
-Raíz: el total de horas. Adentro: la lectura de pantalla, la lectura de la app y el mensaje del piloto. Los tres entran. Sale uno.
+Raíz: el total de horas. Adentro: la pantalla, la app, el mensaje del piloto y las horas desde la última 50. Los tres entran. Sale uno.
 
-No se suman piloto y app. Diez horas o más por encima: manda la app. App por debajo porque no cerraron la misión: manda la hoja. FlightHub no entra.
+No se suman el mensaje y la app. Si se leyó la pantalla, esa manda. Si la app trae 10 h o más por encima, se corrige la hoja. Si trae menos porque no cerraron la misión, se queda la hoja. FlightHub no entra. El total fijado o corregido dispara el recálculo del plan.
 
 | Comando | Evento |
 |---|---|
 | Registrar la pantalla | Horas fijadas por la pantalla |
-| Corregir con la app | Hoja corregida |
+| Corregir con la app | Hoja corregida con la app |
 | Conservar la hoja | Misión abierta, hoja conservada |
-| Descartar el mensaje | Mensaje no sumado |
+| Descartar el mensaje del piloto | Mensaje no sumado |
 
-<a id="v6d-bateria"></a>
+<a id="v6d-baterias"></a>
 
-### V6d Batería
+### V6d Baterías
 
-![V6d Batería](vistas/V6d-bateria.png)
+![V6d Baterías](vistas/V6d-bateria.png)
 
-Raíz: la batería. Adentro: modelo, ciclos, alerta o hinchazón.
+Raíz: la batería. Adentro: modelo, ciclos, alerta o hinchazón, y el estado.
 
-No se da de baja sola. La del T50 no entra en el T40. Quieta más de siete días, a media carga, no es baja. Pasada de 500 ciclos solo con autorización, sin hinchazón, celdas parejas y lote cerca de carretera, en el pico de arroz.
+No se da de baja sola. La del T50 no entra en el T40. Quieta más de siete días se guarda a media carga, y eso no es baja. Sobre 500 ciclos solo con autorización, sin hinchazón, celdas parejas y lote cerca de carretera. El de línea puede apartarla y mandar foto; no la carga.
 
 | Comando | Evento |
 |---|---|
 | Apartar | Batería apartada |
 | Proponer baja | Baja propuesta |
-| Dar de baja | Baja decidida por el jefe |
-| Autorizar sobre 500 | Excepción de pico de arroz |
+| Dar de baja | Baja firmada por el jefe |
+| Autorizar sobre 500 ciclos | Excepción de pico de arroz |
 | Guardar a media carga | Quedó a media carga |
+| Contar las sanas del modelo | Sanas del modelo contadas |
 
-<a id="v6e-indicador-del-dia"></a>
+<a id="v6e-indicadores-del-dia"></a>
 
-### V6e Indicador del día
+### V6e Indicadores del día
 
-![V6e Indicador del día](vistas/V6e-indicador.png)
+![V6e Indicadores del día](vistas/V6e-indicador.png)
 
-Raíz: la observación de las cinco. Adentro: disponibles, lotes corridos por el taller, fallos de pre-vuelo y espera de Bogotá.
+Raíz: la observación de las cinco. Adentro: disponibles, lotes corridos por el taller, fallos críticos de pre-vuelo, verdes con 50 h vencidas, espera de Bogotá y el costo si existe.
 
-Disponible es quien puede entrar mañana, en el aire o sobrando en tierra. No es el mediodía en FlightHub. El preventivo a tiempo no es una falla. Si falta el costo o no se contaron las fallas, no se escribe cero. Pedir el tiempo medio se rechaza: el jefe no lo calcula y un cero diría que no hubo fallas.
+Disponible es quien puede entrar mañana, en el aire o sobrando en tierra. No es el conteo de FlightHub. Un preventivo a tiempo no es una falla. Si falta el dato, el indicador queda vacío. Un lote corrido porque el cliente no tuvo el químico no cuenta. Pedir el tiempo medio entre fallas se rechaza: el jefe no lo calcula y un cero diría que no hubo fallas.
 
 | Comando | Evento |
 |---|---|
-| Cerrar el conteo | Lista del día guardada |
-| Anotar lote del taller | Lote corrido contado |
+| Cerrar el conteo de las cinco | Observación guardada |
+| Anotar lote corrido por el taller | Lote corrido contado |
+| Anotar fallo de pre-vuelo | Fallo de pre-vuelo contado |
+| Anotar espera de Bogotá | Espera de Bogotá contada |
 | Pedir el costo | Costo publicado o dejado vacío |
-| Pedir el tiempo medio | Tiempo medio rechazado |
+| Pedir el tiempo medio entre fallas | Tiempo medio no calculado |
 
-<a id="v6f-retencion"></a>
+<a id="v6f-retencion-y-expediente"></a>
 
-### V6f Retención
+### V6f Retención y expediente
 
-![V6f Retención](vistas/V6f-retencion.png)
+![V6f Retención y expediente](vistas/V6f-retencion.png)
 
 Raíz: la retención. Adentro: el mensaje de seguridad, el boletín con sus seriales y la carpeta.
 
-El taller no radica y no entra al portal. Un comentario de otro operador no para la flota. Si el boletín dice «en la próxima revisión de 50 h», no se saca el dron antes. Si dice que no vuele hasta cambiar la pieza, se frena ese día. Si no hay papel ni foto, no se inventa el servicio: se vuelve a hacer.
+Se obedece el mensaje. El taller no entra al portal. Un comentario de otro operador no para la flota. Por registro o póliza se termina la jornada empezada y no se programa otra. Por boletín de seguridad, motor o batería no se carga otro tanque. Si seguridad dice que no se desarme, no se desarma, salvo la batería con riesgo de incendio. El boletín que dice «en la próxima 50» no frena ese día: se anota en el plan.
 
 | Comando | Evento |
 |---|---|
-| Recibir mensaje | Dron frenado por papeles |
-| Comparar seriales | Coincidencia de serial |
-| Frenar ya | Dron frenado por boletín |
-| Diferir a las 50 h | Boletín dejado para la revisión |
-| Entregar carpeta | Carpeta entregada a seguridad |
+| Recibir mensaje de seguridad | Dron frenado por papeles |
+| Comparar seriales del boletín | Coincidencia de serial |
+| Frenar ya por boletín | Dron frenado por boletín |
+| Diferir a la revisión de 50 h | Boletín dejado para la revisión |
+| Entregar la carpeta | Carpeta entregada a seguridad |
 
-<a id="v6g-pedido"></a>
+<a id="v6g-pedido-de-repuesto"></a>
 
-### V6g Pedido
+### V6g Pedido de repuesto
 
-![V6g Pedido](vistas/V6g-pedido.png)
+![V6g Pedido de repuesto](vistas/V6g-pedido.png)
 
-Raíz: el pedido. Adentro: nombre y modelo, aviso de llegada y costo si lo pasan.
+Raíz: el pedido. Adentro: nombre y modelo, el número de parte si Bogotá lo pide, el aviso de llegada y el costo si lo pasan.
 
-Sin código de bodega. Siigo no devuelve existencia. Si la pieza no está, el dron no sale aunque el lote esté prometido. La garantía no suelta el vuelo: si hay pieza en la estantería se monta la nuestra y la mala queda apartada.
+Sin código de bodega. Siigo no devuelve existencia ni fecha. Si la pieza no llegó, el dron no sale aunque el lote esté prometido. No se monta pieza de otro modelo. La garantía no suelta el vuelo: si hay pieza en la estantería, se monta la nuestra. La llegada dispara montar la pieza en el despiece. La espera se cuenta en los indicadores.
 
 | Comando | Evento |
 |---|---|
 | Pedir por nombre y modelo | Pieza pedida |
 | Registrar llegada | Llegada avisada |
 | Adjuntar costo | Costo adjuntado |
-| Negar la suelta | Dron sigue en orden |
+| Mantener el dron en orden | Dron sigue esperando la pieza |
+
+<a id="v6h-plan-y-despiece"></a>
+
+### V6h Plan y despiece
+
+![V6h Plan y despiece](vistas/V6h-plan.png)
+
+Dos agregados. El despiece guarda la pieza montada, su condición, el modelo y el repuesto que toca pedir. El plan guarda el vencimiento de 50 h, el de motor y el boletín dejado para esa revisión.
+
+Nada de T40 se monta en un T50, ni al revés. Hélice y atomizador se cambian de a par. El T50 lleva dos bombas y no sale con una. La bomba se abre si la probeta baja de 10 L/min en el T40 o de 13 en el T50. La de 50 h entra al cerrar la jornada en que se cumple. No se corta un lote ya empezado y no se arma jornada nueva con la revisión pendiente. En el motor gana lo que llegue primero, 200 h o seis meses. La de 50 h no borra la de motor. La bomba no vence por calendario.
+
+| Comando | Evento |
+|---|---|
+| Montar pieza | Pieza montada |
+| Retirar pieza | Pieza retirada con su serial |
+| Rechazar pieza de otro modelo | Cruce de modelo rechazado |
+| Recalcular con las horas | Revisión de 50 h vencida |
+| Revisar la fecha de motor | Visita de motor vencida |
+| Anotar boletín para la 50 | Boletín en la próxima revisión |
+| Cerrar la revisión | Revisión hecha |
+
+La revisión vencida abre la orden. Las horas fijadas o corregidas disparan el recálculo.
+
+<a id="v6i-identidad-t40t50"></a>
+
+### V6i Identidad T40/T50
+
+![V6i Identidad T40/T50](vistas/V6i-identidad.png)
+
+Raíz: el dron. Adentro: número, modelo, serial y fecha de entrega.
+
+Número, modelo y serial son los mismos en todos los contextos. Solo existen los 24 drones de la flota. Seis T50 entregados desde noviembre de 2025 siguen en garantía de un año; el resto no. Un dron de afuera se rechaza.
+
+| Comando | Evento |
+|---|---|
+| Registrar dron de la flota | Dron registrado |
+| Consultar número y modelo | Número y modelo entregados |
+| Rechazar dron de afuera | Dron ajeno rechazado |
 
 <a id="7-mapa-de-contextos-e-interoperabilidad"></a>
 
@@ -376,17 +436,24 @@ Sin código de bodega. Siigo no devuelve existencia. Si la pieza no está, el dr
 
 ![V8 Mapa de contextos](vistas/V8-contextos.png)
 
-Soltar el vuelo está al centro. Los de la izquierda le entregan lo que él pidió. Los de la derecha comparten el número y el modelo, o no deciden el verde.
+V8 nombra el patrón en la flecha. La flecha va del proveedor al cliente. Cada flecha es recta y el nombre cabe en el hueco, en dos renglones: el patrón y el dato. Soltar el vuelo está al centro. A la izquierda, quien le entrega algo. A la derecha, quien recibe la lista, el freno o el número.
 
-| Relación | Entre quiénes | Patrón | Por qué ese patrón |
+| De | A | Patrón | Dato |
 |---|---|---|---|
-| Un solo total | Horas → Soltar el vuelo | Cliente-proveedor | El central dice qué necesita: una cifra. Horas no marca el verde |
-| Cierre, sin verde | Intervención → Soltar el vuelo | Cliente-proveedor | El central dice que el cierre crítico no basta. Intervención no lo discute |
-| Dos baterías sanas | Baterías → Soltar el vuelo | Cliente-proveedor | El central publica solo si hay dos del modelo |
-| Freno | Retención → Soltar el vuelo | Conformista | «Este dron no sale» no se reinterpreta |
-| Número y modelo | Identidad → Soltar el vuelo, y también hacia la orden | Núcleo compartido | Si cada contexto tuviera su propio modelo, la pieza se cruzaría |
+| Horas, Plan, Intervención, Baterías | Soltar el vuelo | Cliente-proveedor | Un solo total, la revisión vencida, el cierre sin verde, dos sanas del modelo |
+| Horas | Plan | Cliente-proveedor | Las horas, para recalcular |
+| Plan | Intervención | Cliente-proveedor | La revisión que toca |
+| Intervención | Pedido | Cliente-proveedor | La pieza que falta |
+| Soltar el vuelo | Indicadores | Cliente-proveedor | La lista y los devueltos |
+| Retención | Soltar el vuelo | Conformista | El freno no se reinterpreta |
+| Seguridad | Retención | Conformista | «Este dron no sale» |
+| App del Agras, Novedades, Siigo, Distribuidor, Programa | El contexto que traduce | Capa anticorrupción | Pantalla, alerta, novedad, costo, nombre y modelo, boletín, lote corrido |
+| Lista de las cinco | Grupo «Programa» | Servicio abierto | Lenguaje publicado: número, si sale, límite o motivo |
+| Identidad | Soltar el vuelo | Núcleo compartido | Número, modelo y serial |
 
-Indicadores y pedido están en el mapa y no sueltan el vuelo. Los sistemas de afuera están en V9, para no mezclar el patrón entre contextos propios con el cruce hacia otro sistema.
+Plan, Intervención, Horas, Baterías y Pedido también usan ese núcleo. Esas cinco asociaciones están en el modelo y no se dibujaron: cinco flechas más al mismo punto volvían a montar los nombres. La nota de la vista lo dice. Tres flujos quedan solo en el modelo, por la misma razón: el boletín diferido a la 50, que va de Retención al Plan; la llegada de la pieza, que va de Pedido al Plan; y la espera de Bogotá, que va de Pedido a Indicadores. En el dibujo se leen en V6, donde el evento de un agregado dispara el comando del otro.
+
+FlightHub, el portal, el ICA y la habilitación están en el grupo «Caminos separados». Con esos no se intercambia nada.
 
 <a id="v9-interoperabilidad-y-anticorrupcion"></a>
 
@@ -394,21 +461,26 @@ Indicadores y pedido están en el mapa y no sueltan el vuelo. Los sistemas de af
 
 ![V9 Interoperabilidad y anticorrupción](vistas/V9-interoperabilidad.png)
 
-Cada intercambio es una fila. La flecha es corta y el nombre es el dato, no el sistema.
+Cada intercambio es una interfaz y un servicio de aplicación, metidos en el contexto que traduce. La flecha dice el dato y el ritmo. El servicio de aplicación realiza el servicio de negocio de la capa anticorrupción de V4.
 
-| De | A | Dato | Ritmo | Patrón |
-|---|---|---|---|---|
-| App del Agras | Horas de vuelo | Lectura de pantalla | Diario, cuando alguien la copió | Anticorrupción. No se suma sola |
-| Novedades de campo | Intervención y orden | Novedad y foto | Diario, los días que se vuela | Anticorrupción. El mensaje no es el total de horas |
-| Soltar el vuelo | Canal de programación | Lista: número, si sale, límite, motivo | Diario, antes de las cinco | Lenguaje publicado |
-| Canal de programación | Indicadores | Lote corrido | Diario, cuando el coordinador lo dice | El indicador no lee FlightHub |
-| Siigo | Pedido | Costo, si lo pasan | Eventual | No vuelve existencia ni fecha |
-| Pedido | Distribuidor de Bogotá | Nombre y modelo | Eventual | No hay código de bodega |
-| Distribuidor | Retención | Boletín | Eventual | Se compara el serial. No se obedece un comentario de otro operador |
-| Seguridad | Retención | No sale | Eventual | Conformista |
-| Retención | Seguridad | Carpeta | Eventual, una vez al año o si hubo incidente | El taller ordena la carpeta. Seguridad la manda. No hay API |
+| De | A | Dato | Ritmo |
+|---|---|---|---|
+| Fotos de Buga y Espinal | Baterías | Las que fallaron | Semanal, el lunes |
+| App del Agras | Baterías | Alerta y ciclos | Diario |
+| App del Agras | Horas | Horas de la pantalla | Diario |
+| Novedades campo | Horas | Horas del mensaje, que no se suman | Diario |
+| Novedades campo | Intervención | Número, qué pasó y foto | Diario |
+| Soltar el vuelo | Grupo «Programa» | Número, si sale, límite o motivo | Antes de las 17:00 |
+| Grupo «Programa» | Indicadores | Lote corrido por el taller | Diario |
+| Siigo | Pedido | Costo, si lo pasan | Eventual |
+| Seguridad | Retención | «Este dron no sale» | Eventual |
+| Retención | Seguridad | Carpeta del dron | Una vez al año |
+| Intervención | Operaciones | Última probeta, si reclaman la dosis | Eventual |
+| Pedido | Distribuidor | Nombre y modelo | Eventual |
+| Distribuidor | Pedido | Aviso de llegada | Eventual |
+| Distribuidor | Retención | Boletín: seriales y alcance | Eventual |
 
-FlightHub, el portal de la Aeronáutica, el ICA y la habilitación del técnico no están en esta vista. En la entrevista ese cruce no existe. Dibujarlos con una línea de «no hay flujo» hacía parecer que sí había intercambio.
+El mismo grupo de caminos separados de V8 está abajo. Dibujarlos con una línea de «no hay flujo» hacía parecer que sí había intercambio.
 
 <a id="8-bounded-context-canvas"></a>
 
@@ -420,18 +492,20 @@ FlightHub, el portal de la Aeronáutica, el ICA y la habilitación del técnico 
 
 ![V11 Canvas de Soltar el vuelo](vistas/V11-canvas.png)
 
-El canvas es una vista de Archi, no un tablero aparte. Arriba están el componente del contexto, la meta que realiza y el principio que la sostiene. El resto son notas, porque el canvas pide frases y no más cajas de aplicación. Se usó nota para propósito, clasificación, rol, lenguaje, entrada, salida, decisiones y supuestos. Así cabe en una página y se puede leer sin seguir flechas.
+El canvas es una vista de Archi, del tipo Canvas, no un tablero aparte. Sigue las secciones del Bounded Context Canvas: nombre, propósito, clasificación estratégica, rol, comunicación entrante, lenguaje, decisiones, comunicación saliente, supuestos, métricas y preguntas abiertas.
 
 | Bloque | Qué dice |
 |---|---|
-| Propósito | Decidir si el dron entra al programa de mañana y publicarlo antes de las 17:00. No arma la finca ni promete el lote |
-| Clasificación | Dominio central. Es la decisión que no puede fallar aunque fallen la foto, el costo o el papel de Espinal |
-| Rol | Motor, bomba, batería y electrónica no salen porque el técnico firmó, porque el lote está vendido o porque el piloto quiere terminar |
-| Lenguaje | Verde, en OT, pendiente de visto bueno, sale condicionado, lista de las cinco, visto bueno |
-| Entrante | Cierre de línea o cierre crítico, horas ya reconciliadas, dos baterías sanas, freno ya comparado |
-| Saliente | Número, sale, condicionado con límite, o no sale con el motivo. Sin despiece, sin regla de 50 h y sin póliza |
-| Decisiones | Sin visto bueno se queda en tierra. El lote empezado no se corta. 200 h o seis meses, lo primero. Condicionado solo el carenado que no toca hélice ni tanque. Una sola batería no entra. Lo cerrado después de las cinco puede quedar en verde y aun así no se mete solo al programa de esa madrugada |
-| Supuestos | El coordinador no programa un dron en OT. La app sigue siendo el origen de las horas. No hay portal. Si falta la pieza, este contexto no suelta el vuelo. El pre-vuelo no pone el verde |
+| Propósito | Decidir si cada dron entra al programa de mañana y publicarlo antes de las 17:00. No arma la finca ni promete el lote |
+| Clasificación | Dominio central. Modelo de negocio: cumplimiento y protección del ingreso. Evolución: hecho a la medida |
+| Rol | Contexto de ejecución: decide la salida y la publica hacia operaciones |
+| Lenguaje | Verde, en OT, pendiente de visto bueno, sale condicionado, frenado, visto bueno, lista de las cinco |
+| Entrante | Cierres de Intervención, horas fijadas, revisión vencida, consulta de dos baterías sanas, freno, visto bueno del jefe, devolución por pre-vuelo |
+| Saliente | Lista publicada hacia «Programa», en lenguaje publicado. Verde y condicionado hacia Indicadores. Devuelto a orden hacia Intervención. Consulta de número y modelo a Identidad |
+| Decisiones | Sin visto bueno, lo crítico se queda. Con las 50 h sin hacer no hay jornada nueva. Motor: 200 h o seis meses, lo primero. Condicionado solo el carenado. Menos de dos baterías: no entra. Lo de después de las cinco no entra solo |
+| Supuestos | El coordinador no programa un dron en OT ni pendiente. La app sigue siendo el origen de las horas. Si seguridad no avisa, el freno no se ve. No hay portal. El pre-vuelo no pone el verde |
+| Métricas | Cero verdes con las 50 h vencidas. Cero fallos de motor, bomba o batería en el pre-vuelo. Referencia 18 de 24 a las cinco. En caña, no más de dos lotes corridos por el taller en la semana |
+| Preguntas abiertas | ¿Quién da el visto bueno si el jefe no está? ¿Cómo entra la orden de Espinal sin señal? ¿Se guarda la lista para comparar meses? |
 
 <a id="9-decisiones-y-supuestos"></a>
 
@@ -443,13 +517,23 @@ El canvas es una vista de Archi, no un tablero aparte. Arriba están el componen
 
 ![V10 Trazabilidad vertical](vistas/V10-trazabilidad.png)
 
-La vista muestra dos cadenas, de arriba abajo, para que la relación vertical se lea sin cruzar el dibujo.
+Cada columna baja de la meta al componente, en vertical, para que la relación no cruce el dibujo. El orden, de arriba abajo, es meta, principio cuando existe, requerimiento, capacidad, servicio de negocio, servicio de aplicación y componente. El componente realiza el servicio de aplicación, ese realiza el de negocio, ese realiza la capacidad y esa realiza el requerimiento.
 
-La de la izquierda es el visto bueno. La meta la realizan el resultado «sin respuesta, el dron se queda en tierra» y el requisito de los estados. El proceso de negocio «dar el visto bueno» realiza la capacidad «soltar el vuelo». Ese mismo proceso realiza el servicio de negocio «emitir el visto bueno». En la capa de aplicación, el componente se asigna al proceso de aplicación «otorgar visto bueno», ese proceso realiza el servicio de aplicación «emitir visto bueno», y ese servicio realiza el servicio de negocio. Así se baja de la meta al componente.
+| Columna | Componente | Llega a |
+|---|---|---|
+| Soltar el vuelo | Decidir la salida | Meta del visto bueno, por el principio «la firma no es el visto bueno» |
+| Baterías | Cuidar baterías | La misma meta, por la baja y las dos sanas |
+| Plan | Calcular vencimientos | Meta del plan, por «horas y calendario mandan los dos» |
+| Orden | Llevar la orden | Expediente completo |
+| Horas | Registrar horas | Un solo total. Al lado, la restricción de no sumar el mensaje empuja en contra de saltarse el requerimiento |
+| Retención | Aplicar frenos | La lista confiable, porque un frenado no entra |
+| Pedido | Pedir repuestos | Ningún dron sale si falta la pieza |
+| Identidad | Entregar número y modelo | La misma meta, por «el repuesto no se cruza» |
+| Indicadores | Contar el día | Indicadores solo con dato real |
 
-La de la derecha es la regla de las horas. El requisito «un solo total» realiza la meta. La restricción «no se suma el mensaje del piloto con la app» influye en contra de saltarse ese requisito. Abajo, el servicio de aplicación «registrar horas» realiza el servicio de negocio «registrar las horas».
+A la izquierda, el jefe se asigna a «dar el visto bueno» y ese proceso realiza la capacidad de soltar el vuelo. El servicio de aplicación le sirve a ese proceso. Así se ve que la columna no es solo software: el acto sigue siendo del jefe.
 
-Reglas que el modelo no afloja, aunque no quepan como una flecha:
+Reglas que el modelo no afloja, aunque no quepan como una flecha más:
 
 - Horas y calendario mandan los dos. En el motor gana lo que se cumpla primero.
 - En el banco, el T40 se abre si la bomba baja de 10 L/min. El T50, si baja de 13. Hélice y atomizador se cambian de a par.

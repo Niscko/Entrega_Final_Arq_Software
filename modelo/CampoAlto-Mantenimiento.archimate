@@ -2300,31 +2300,31 @@
     <element xsi:type="archimate:AggregationRelationship" id="id-rel-0922" source="g-v7-taller" target="mn-disp-taller"/>
     <element xsi:type="archimate:AggregationRelationship" id="id-rel-0923" source="g-v7-otro" target="mn-disp-fh"/>
     <element xsi:type="archimate:AggregationRelationship" id="id-rel-0924" source="g-v7-taller" target="mn-lote"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0925" source="cmp-ot" target="cmp-soltar" name="Cliente-proveedor · cierre, sin verde"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0926" source="cmp-horas" target="cmp-soltar" name="Cliente-proveedor · un solo total"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0927" source="cmp-bat" target="cmp-soltar" name="Cliente-proveedor · dos sanas del modelo"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0928" source="ext-novedades" target="cmp-ot" name="Capa anticorrupción · novedad"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0929" source="ext-agras" target="cmp-horas" name="Capa anticorrupción · lectura de pantalla"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0930" source="ext-agras" target="cmp-bat" name="Capa anticorrupción · alerta y ciclos"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0931" source="cmp-ot" target="cmp-ped" name="Cliente-proveedor · pieza que falta"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0932" source="ext-siigo" target="cmp-ped" name="Capa anticorrupción · costo, si lo pasan"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0933" source="cmp-plan" target="cmp-soltar" name="Cliente-proveedor · revisión vencida"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0934" source="cmp-plan" target="cmp-ot" name="Cliente-proveedor · revisión que toca"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0935" source="cmp-horas" target="cmp-plan" name="Cliente-proveedor · horas"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0936" source="cmp-ret" target="cmp-soltar" name="Conformista · freno"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0937" source="ext-seg" target="cmp-ret" name="Conformista · «este dron no sale»"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0938" source="ext-dist" target="cmp-ret" name="Capa anticorrupción · boletín"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0939" source="cmp-ped" target="ext-dist" name="Capa anticorrupción · nombre y modelo"/>
-    <element xsi:type="archimate:CompositionRelationship" id="id-rel-0940" source="cmp-soltar" target="ai-lista"/>
-    <element xsi:type="archimate:ServingRelationship" id="id-rel-0941" source="ai-lista" target="ext-programa" name="Servicio abierto · lenguaje publicado"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0942" source="cmp-soltar" target="cmp-ind" name="Cliente-proveedor · lista y devueltos"/>
-    <element xsi:type="archimate:FlowRelationship" id="id-rel-0943" source="ext-programa" target="cmp-ind" name="Capa anticorrupción · lote corrido"/>
-    <element xsi:type="archimate:AssociationRelationship" id="id-rel-0944" source="cmp-id" target="cmp-soltar" name="Núcleo compartido · número, modelo y serial"/>
-    <element xsi:type="archimate:AssociationRelationship" id="id-rel-0945" source="cmp-id" target="cmp-plan" name="Núcleo compartido"/>
-    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0946" source="g-sin" target="ext-fh"/>
-    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0947" source="g-sin" target="ext-portal"/>
-    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0948" source="g-sin" target="ext-ica"/>
-    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0949" source="g-sin" target="ext-hab"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0925" source="ext-siigo" target="cmp-ped" name="Capa anticorrupción&#xA;costo, si lo pasan"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0926" source="cmp-ot" target="cmp-ped" name="Cliente-proveedor&#xA;pieza que falta"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0927" source="cmp-ped" target="ext-dist" name="Capa anticorrupción&#xA;nombre y modelo"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0928" source="ext-dist" target="cmp-ret" name="Capa anticorrupción&#xA;boletín"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0929" source="ext-novedades" target="cmp-ot" name="Capa anticorrupción&#xA;novedad"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0930" source="cmp-ot" target="cmp-soltar" name="Cliente-proveedor&#xA;cierre, sin verde"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0931" source="cmp-plan" target="cmp-ot" name="Cliente-proveedor&#xA;revisión que toca"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0932" source="cmp-plan" target="cmp-soltar" name="Cliente-proveedor&#xA;revisión vencida"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0933" source="cmp-horas" target="cmp-plan" name="Cliente-proveedor&#xA;horas"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0934" source="cmp-horas" target="cmp-soltar" name="Cliente-proveedor&#xA;un solo total"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0935" source="ext-agras" target="cmp-horas" name="Capa anticorrupción&#xA;lectura de pantalla"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0936" source="ext-agras" target="cmp-bat" name="Capa anticorrupción&#xA;alerta y ciclos"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0937" source="cmp-bat" target="cmp-soltar" name="Cliente-proveedor&#xA;dos sanas del modelo"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0938" source="cmp-ret" target="cmp-soltar" name="Conformista&#xA;freno"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0939" source="ext-seg" target="cmp-ret" name="Conformista&#xA;«este dron no sale»"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0940" source="cmp-soltar" target="cmp-ind" name="Cliente-proveedor&#xA;lista y devueltos"/>
+    <element xsi:type="archimate:FlowRelationship" id="id-rel-0941" source="ext-programa" target="cmp-ind" name="Capa anticorrupción&#xA;lote corrido"/>
+    <element xsi:type="archimate:CompositionRelationship" id="id-rel-0942" source="cmp-soltar" target="ai-lista"/>
+    <element xsi:type="archimate:ServingRelationship" id="id-rel-0943" source="ai-lista" target="ext-programa" name="Servicio abierto&#xA;lenguaje publicado"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-rel-0944" source="cmp-id" target="cmp-soltar" name="Núcleo compartido&#xA;número, modelo y serial"/>
+    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0945" source="g-sin" target="ext-fh"/>
+    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0946" source="g-sin" target="ext-portal"/>
+    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0947" source="g-sin" target="ext-ica"/>
+    <element xsi:type="archimate:AggregationRelationship" id="id-rel-0948" source="g-sin" target="ext-hab"/>
+    <element xsi:type="archimate:AssociationRelationship" id="id-rel-0949" source="cmp-id" target="cmp-plan" name="Núcleo compartido"/>
     <element xsi:type="archimate:AssociationRelationship" id="id-rel-0950" source="cmp-id" target="cmp-ot" name="Núcleo compartido"/>
     <element xsi:type="archimate:AssociationRelationship" id="id-rel-0951" source="cmp-id" target="cmp-horas" name="Núcleo compartido"/>
     <element xsi:type="archimate:AssociationRelationship" id="id-rel-0952" source="cmp-id" target="cmp-bat" name="Núcleo compartido"/>
@@ -5713,122 +5713,110 @@
     <folder name="5 Contextos e interoperabilidad" id="id-fld-views-5">
       <element xsi:type="archimate:ArchimateDiagramModel" name="V8 Mapa de contextos" id="id-v8">
         <documentation>Contextos delimitados y patrones de relación entre ellos y con los sistemas externos (DDD, diapositivas 25 a 28). La flecha va del proveedor (upstream) al cliente (downstream).</documentation>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n001" targetConnections="id-v8-c017 id-v8-c018 id-v8-c019 id-v8-c025 id-v8-c028 id-v8-c036" fillColor="#ffe08a" archimateElement="cmp-soltar">
-          <bounds x="640" y="200" width="240" height="300"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c032" source="id-v8-n001" target="id-v8-n011" archimateRelationship="id-rel-0940">
-            <bendpoint startX="160" startY="-35" endX="-150"/>
-          </sourceConnection>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c034" source="id-v8-n001" target="id-v8-n013" archimateRelationship="id-rel-0942">
-            <bendpoint startX="160" startY="120" endX="-150"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n001" fillColor="#dedede" archimateElement="ext-siigo">
+          <bounds x="16" y="16" width="360" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c017" source="id-v8-n001" target="id-v8-n002" archimateRelationship="id-rel-0925"/>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n002" targetConnections="id-v8-c017 id-v8-c018" archimateElement="cmp-ped">
+          <bounds x="676" y="16" width="260" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c019" source="id-v8-n002" target="id-v8-n003" archimateRelationship="id-rel-0927"/>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n003" targetConnections="id-v8-c019" fillColor="#dedede" archimateElement="ext-dist">
+          <bounds x="1836" y="16" width="280" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c020" source="id-v8-n003" target="id-v8-n008" archimateRelationship="id-rel-0928"/>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n004" fillColor="#dedede" archimateElement="ext-novedades">
+          <bounds x="16" y="196" width="360" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c021" source="id-v8-n004" target="id-v8-n005" archimateRelationship="id-rel-0929"/>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n005" targetConnections="id-v8-c021 id-v8-c023" archimateElement="cmp-ot">
+          <bounds x="676" y="196" width="260" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c018" source="id-v8-n005" target="id-v8-n002" archimateRelationship="id-rel-0926"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c022" source="id-v8-n005" target="id-v8-n006" archimateRelationship="id-rel-0930">
+            <bendpoint startX="280" endX="-300" endY="-270"/>
           </sourceConnection>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n002" targetConnections="id-v8-c020 id-v8-c026" archimateElement="cmp-ot">
-          <bounds x="330" y="200" width="220" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c017" source="id-v8-n002" target="id-v8-n001" archimateRelationship="id-rel-0925">
-            <bendpoint startX="155" startY="8" endX="-165" endY="-112"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n006" targetConnections="id-v8-c022 id-v8-c024 id-v8-c026 id-v8-c029 id-v8-c030 id-v8-c036" fillColor="#ffe08a" archimateElement="cmp-soltar">
+          <bounds x="1236" y="196" width="300" height="618"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c032" source="id-v8-n006" target="id-v8-n016" archimateRelationship="id-rel-0940">
+            <bendpoint startX="590" startY="270" endX="-620"/>
           </sourceConnection>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c023" source="id-v8-n002" target="id-v8-n007" archimateRelationship="id-rel-0931"/>
-        </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n003" targetConnections="id-v8-c021" archimateElement="cmp-horas">
-          <bounds x="330" y="320" width="220" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c018" source="id-v8-n003" target="id-v8-n001" archimateRelationship="id-rel-0926"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c027" source="id-v8-n003" target="id-v8-n008" archimateRelationship="id-rel-0935">
-            <bendpoint startX="167" startY="-18" endX="-153" endY="262"/>
-            <bendpoint startX="167" startY="-294" endX="-153" endY="-14"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c034" source="id-v8-n006" target="id-v8-n013" archimateRelationship="id-rel-0942">
+            <bendpoint startX="300" startY="83" endX="-290"/>
           </sourceConnection>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n004" targetConnections="id-v8-c022" archimateElement="cmp-bat">
-          <bounds x="330" y="440" width="220" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c019" source="id-v8-n004" target="id-v8-n001" archimateRelationship="id-rel-0927">
-            <bendpoint startX="155" endX="-165" endY="120"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n007" fillColor="#dedede" archimateElement="ext-seg">
+          <bounds x="2416" y="196" width="360" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c031" source="id-v8-n007" target="id-v8-n008" archimateRelationship="id-rel-0939"/>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n008" targetConnections="id-v8-c020 id-v8-c031" archimateElement="cmp-ret">
+          <bounds x="1836" y="196" width="280" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c030" source="id-v8-n008" target="id-v8-n006" archimateRelationship="id-rel-0938">
+            <bendpoint startX="-290" endX="300" endY="-270"/>
           </sourceConnection>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n005" fillColor="#dedede" archimateElement="ext-novedades">
-          <bounds x="40" y="200" width="200" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c020" source="id-v8-n005" target="id-v8-n002" archimateRelationship="id-rel-0928"/>
-        </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n006" fillColor="#dedede" archimateElement="ext-agras">
-          <bounds x="40" y="320" width="200" height="180"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c021" source="id-v8-n006" target="id-v8-n003" archimateRelationship="id-rel-0929">
-            <bendpoint startX="145" startY="-60" endX="-155"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n009" targetConnections="id-v8-c025" archimateElement="cmp-plan">
+          <bounds x="676" y="376" width="260" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c023" source="id-v8-n009" target="id-v8-n005" archimateRelationship="id-rel-0931"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c024" source="id-v8-n009" target="id-v8-n006" archimateRelationship="id-rel-0932">
+            <bendpoint startX="280" endX="-300" endY="-90"/>
           </sourceConnection>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c022" source="id-v8-n006" target="id-v8-n004" archimateRelationship="id-rel-0930">
-            <bendpoint startX="145" startY="60" endX="-155"/>
-          </sourceConnection>
-        </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n007" targetConnections="id-v8-c023 id-v8-c024" archimateElement="cmp-ped">
-          <bounds x="330" y="40" width="220" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c031" source="id-v8-n007" target="id-v8-n016" archimateRelationship="id-rel-0939">
-            <bendpoint startX="-40" startY="-56" endX="-670" endY="-596"/>
-            <bendpoint startX="-426" startY="-56" endX="-1056" endY="-596"/>
-            <bendpoint startX="-426" startY="630" endX="-1056" endY="90"/>
-            <bendpoint startX="630" startY="630" endY="90"/>
-          </sourceConnection>
-        </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n008" targetConnections="id-v8-c027 id-v8-c037" archimateElement="cmp-plan">
-          <bounds x="640" y="40" width="240" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c025" source="id-v8-n008" target="id-v8-n001" archimateRelationship="id-rel-0933"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c026" source="id-v8-n008" target="id-v8-n002" archimateRelationship="id-rel-0934">
-            <bendpoint startX="-170" startY="22" endX="150" endY="-138"/>
-            <bendpoint startX="-170" startY="144" endX="150" endY="-16"/>
-          </sourceConnection>
-        </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n009" fillColor="#dedede" archimateElement="ext-siigo">
-          <bounds x="40" y="40" width="200" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c024" source="id-v8-n009" target="id-v8-n007" archimateRelationship="id-rel-0932"/>
         </child>
         <child xsi:type="archimate:DiagramObject" id="id-v8-n010" archimateElement="cmp-id">
-          <bounds x="960" y="170" width="220" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c036" source="id-v8-n010" target="id-v8-n001" archimateRelationship="id-rel-0944">
-            <bendpoint startX="-150" startY="15" endX="160" endY="-135"/>
-          </sourceConnection>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c037" source="id-v8-n010" target="id-v8-n008" archimateRelationship="id-rel-0945">
-            <bendpoint startY="-130" endX="310"/>
+          <bounds x="1836" y="376" width="280" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c036" source="id-v8-n010" target="id-v8-n006" archimateRelationship="id-rel-0944">
+            <bendpoint startX="-290" endX="300" endY="-90"/>
           </sourceConnection>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n011" targetConnections="id-v8-c032" archimateElement="ai-lista">
-          <bounds x="960" y="290" width="220" height="50"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c033" source="id-v8-n011" target="id-v8-n012" archimateRelationship="id-rel-0941"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n011" fillColor="#dedede" archimateElement="ext-agras">
+          <bounds x="16" y="556" width="360" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c027" source="id-v8-n011" target="id-v8-n012" archimateRelationship="id-rel-0935"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c028" source="id-v8-n011" target="id-v8-n015" archimateRelationship="id-rel-0936"/>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n012" targetConnections="id-v8-c033" fillColor="#dedede" archimateElement="ext-programa">
-          <bounds x="1260" y="290" width="230" height="50"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c035" source="id-v8-n012" target="id-v8-n013" archimateRelationship="id-rel-0943">
-            <bendpoint startY="155" endX="305"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n012" targetConnections="id-v8-c027" archimateElement="cmp-horas">
+          <bounds x="676" y="556" width="260" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c025" source="id-v8-n012" target="id-v8-n009" archimateRelationship="id-rel-0933"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c026" source="id-v8-n012" target="id-v8-n006" archimateRelationship="id-rel-0934">
+            <bendpoint startX="280" endX="-300" endY="90"/>
           </sourceConnection>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n013" targetConnections="id-v8-c034 id-v8-c035" archimateElement="cmp-ind">
-          <bounds x="960" y="440" width="220" height="60"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n013" targetConnections="id-v8-c034" archimateElement="ai-lista">
+          <bounds x="1836" y="556" width="280" height="64"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c035" source="id-v8-n013" target="id-v8-n014" archimateRelationship="id-rel-0943">
+            <bendpoint startX="290" endX="-330" endY="-7"/>
+          </sourceConnection>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n014" targetConnections="id-v8-c029 id-v8-c030" archimateElement="cmp-ret">
-          <bounds x="640" y="580" width="240" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c028" source="id-v8-n014" target="id-v8-n001" archimateRelationship="id-rel-0936"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n014" targetConnections="id-v8-c035" fillColor="#dedede" archimateElement="ext-programa">
+          <bounds x="2416" y="556" width="360" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c033" source="id-v8-n014" target="id-v8-n016" archimateRelationship="id-rel-0941"/>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n015" fillColor="#dedede" archimateElement="ext-seg">
-          <bounds x="330" y="580" width="220" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c029" source="id-v8-n015" target="id-v8-n014" archimateRelationship="id-rel-0937"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n015" targetConnections="id-v8-c028" archimateElement="cmp-bat">
+          <bounds x="16" y="736" width="360" height="78"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c029" source="id-v8-n015" target="id-v8-n006" archimateRelationship="id-rel-0937">
+            <bendpoint startX="610" endX="-580" endY="270"/>
+          </sourceConnection>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n016" targetConnections="id-v8-c031" fillColor="#dedede" archimateElement="ext-dist">
-          <bounds x="960" y="580" width="220" height="60"/>
-          <sourceConnection xsi:type="archimate:Connection" id="id-v8-c030" source="id-v8-n016" target="id-v8-n014" archimateRelationship="id-rel-0938"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n016" targetConnections="id-v8-c032 id-v8-c033" archimateElement="cmp-ind">
+          <bounds x="2416" y="736" width="360" height="78"/>
         </child>
-        <child xsi:type="archimate:DiagramObject" id="id-v8-n038" fillColor="#f5f5f5" textAlignment="1" archimateElement="g-sin">
-          <bounds x="1250" y="520" width="260" height="300"/>
-          <child xsi:type="archimate:DiagramObject" id="id-v8-n039" fillColor="#dedede" archimateElement="ext-fh">
-            <bounds x="16" y="36" width="228" height="52"/>
+        <child xsi:type="archimate:DiagramObject" id="id-v8-n037" fillColor="#f5f5f5" textAlignment="1" archimateElement="g-sin">
+          <bounds x="1836" y="916" width="940" height="300"/>
+          <child xsi:type="archimate:DiagramObject" id="id-v8-n038" fillColor="#dedede" archimateElement="ext-fh">
+            <bounds x="16" y="36" width="446" height="78"/>
           </child>
-          <child xsi:type="archimate:DiagramObject" id="id-v8-n040" fillColor="#dedede" archimateElement="ext-portal">
-            <bounds x="16" y="100" width="228" height="52"/>
+          <child xsi:type="archimate:DiagramObject" id="id-v8-n039" fillColor="#dedede" archimateElement="ext-portal">
+            <bounds x="478" y="36" width="446" height="78"/>
           </child>
-          <child xsi:type="archimate:DiagramObject" id="id-v8-n041" fillColor="#dedede" archimateElement="ext-ica">
-            <bounds x="16" y="164" width="228" height="52"/>
+          <child xsi:type="archimate:DiagramObject" id="id-v8-n040" fillColor="#dedede" archimateElement="ext-ica">
+            <bounds x="16" y="160" width="446" height="78"/>
           </child>
-          <child xsi:type="archimate:DiagramObject" id="id-v8-n042" fillColor="#dedede" archimateElement="ext-hab">
-            <bounds x="16" y="228" width="228" height="52"/>
+          <child xsi:type="archimate:DiagramObject" id="id-v8-n041" fillColor="#dedede" archimateElement="ext-hab">
+            <bounds x="478" y="160" width="446" height="78"/>
           </child>
         </child>
-        <child xsi:type="archimate:Note" id="id-v8-n043" textAlignment="1">
-          <bounds x="1210" y="40" width="300" height="100"/>
-          <content>Núcleo compartido: Intervención, Horas, Baterías y Pedido también usan número, modelo y serial de Identidad T40/T50.</content>
+        <child xsi:type="archimate:Note" id="id-v8-n042" textAlignment="1">
+          <bounds x="16" y="916" width="920" height="150"/>
+          <content>Núcleo compartido: Plan, Intervención, Horas, Baterías y Pedido también usan el número, el modelo y el serial de Identidad. La flecha dibujada es la del núcleo; las otras cinco están en el modelo.</content>
         </child>
       </element>
       <element xsi:type="archimate:ArchimateDiagramModel" name="V9 Interoperabilidad y anticorrupción" id="id-v9">
